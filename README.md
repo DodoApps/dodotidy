@@ -12,6 +12,79 @@ A native macOS application for system monitoring, disk analysis, and cleanup. Bu
 - **History**: Track all cleaning operations
 - **Scheduled tasks**: Automate cleanup routines
 
+## Safety Guardrails
+
+DodoTidy is designed with multiple safety mechanisms to protect your data:
+
+### 1. Trash-based deletion (Recoverable)
+
+All file deletions use macOS's `trashItem()` API, which moves files to Trash instead of permanently deleting them. You can always recover accidentally deleted files from Trash.
+
+### 2. Protected paths
+
+The following paths are protected by default and will never be cleaned:
+
+- `~/Documents` - Your documents
+- `~/Desktop` - Desktop files
+- `~/Pictures`, `~/Movies`, `~/Music` - Media libraries
+- `~/.ssh`, `~/.gnupg` - Security keys
+- `~/.aws`, `~/.kube` - Cloud credentials
+- `~/Library/Keychains` - System keychains
+- `~/Library/Application Support/MobileSync` - iOS device backups
+
+You can customize protected paths in Settings.
+
+### 3. Safe vs manual-only categories
+
+**Safe auto-clean paths** (used by scheduled tasks):
+- Browser caches (Safari, Chrome, Firefox)
+- Application caches (Spotify, Slack, Discord, VS Code, Zoom, Teams)
+- Xcode DerivedData
+
+**Manual-only paths** (require explicit user action, never auto-cleaned):
+- **Downloads** - May contain important unprocessed files
+- **Trash** - Emptying is IRREVERSIBLE
+- **System logs** - May be needed for troubleshooting
+- **Developer caches** (npm, Yarn, Homebrew, pip, CocoaPods, Gradle, Maven) - May require lengthy re-downloads
+
+### 4. Dry run mode
+
+Enable "Dry run mode" in Settings to preview exactly what files would be deleted without actually deleting anything. This shows:
+- File paths
+- File sizes
+- Modification dates
+- Total count and size
+
+### 5. File age filter
+
+Set a minimum file age (in days) to only clean files older than a specified threshold. This prevents accidentally deleting recently created or modified files.
+
+Example: Set to 7 days to only clean files that haven't been modified in the past week.
+
+### 6. Scheduled task confirmation
+
+When "Confirm scheduled tasks" is enabled (default), scheduled cleaning tasks will:
+- Send a notification when ready to run
+- Wait for user confirmation before executing
+- Never auto-clean without user review
+
+### 7. User-space only operations
+
+DodoTidy operates entirely within user space:
+- No sudo or root privileges required
+- Cannot modify system files
+- Cannot affect other users' data
+- All operations limited to `~/` paths
+
+### 8. Safe optimizer commands
+
+The optimizer only runs well-known, safe system commands:
+- `dscacheutil -flushcache` - Flush DNS cache
+- `qlmanage -r cache` - Reset Quick Look thumbnails
+- `lsregister` - Rebuild Launch Services database
+
+No destructive or risky system commands are included.
+
 ## Requirements
 
 - macOS 14.0 or later
@@ -46,7 +119,7 @@ make run
 ```
 DodoTidy/
 ├── App/
-│   ├── MoleApp.swift              # Main app entry point
+│   ├── DodoTidyApp.swift          # Main app entry point
 │   ├── AppDelegate.swift          # Menu bar management
 │   └── StatusItemManager.swift    # Status bar icon
 ├── Views/
@@ -63,13 +136,14 @@ DodoTidy/
 │   └── MenuBar/
 │       └── MenuBarView.swift      # Menu bar popover
 ├── Services/
-│   └── MoleService.swift          # Core service providers
+│   └── DodoTidyService.swift      # Core service providers
 ├── Models/
 │   ├── SystemMetrics.swift        # System metrics models
 │   └── ScanResult.swift           # Scan result models
 ├── Utilities/
 │   ├── ProcessRunner.swift        # Process execution helper
-│   └── DesignSystem.swift         # Colors, fonts, styles
+│   ├── DesignSystem.swift         # Colors, fonts, styles
+│   └── Extensions.swift           # Formatting helpers
 └── Resources/
     └── Assets.xcassets            # App icons
 ```
@@ -81,11 +155,20 @@ The app uses a provider-based architecture:
 - **DodoTidyService**: Main coordinator that manages all providers
 - **StatusProvider**: System metrics collection using native macOS APIs
 - **AnalyzerProvider**: Disk space analysis using FileManager
-- **CleanerProvider**: Cache and temporary file cleanup
+- **CleanerProvider**: Cache and temporary file cleanup with safety guardrails
 - **OptimizerProvider**: System optimization tasks
 - **UninstallProvider**: App uninstallation with related file detection
 
 All providers use Swift's `@Observable` macro for reactive state management.
+
+## Settings
+
+Access Settings from the app menu or sidebar to configure:
+
+- **General**: Launch at login, menu bar icon, refresh interval
+- **Cleaning**: Confirm before cleaning, dry run mode, file age filter
+- **Protected paths**: Paths that should never be cleaned
+- **Notifications**: Low disk space alerts, scheduled task notifications
 
 ## Design system
 

@@ -126,6 +126,18 @@ final class AppSettings {
     var excludedPaths: [String] {
         didSet { UserDefaults.standard.set(excludedPaths, forKey: "excludedPaths") }
     }
+    var protectedPaths: [String] {
+        didSet { UserDefaults.standard.set(protectedPaths, forKey: "protectedPaths") }
+    }
+    var minimumFileAgeDays: Int {
+        didSet { UserDefaults.standard.set(minimumFileAgeDays, forKey: "minimumFileAgeDays") }
+    }
+    var enableDryRunMode: Bool {
+        didSet { UserDefaults.standard.set(enableDryRunMode, forKey: "enableDryRunMode") }
+    }
+    var confirmScheduledTasks: Bool {
+        didSet { UserDefaults.standard.set(confirmScheduledTasks, forKey: "confirmScheduledTasks") }
+    }
 
     // Analyzer settings
     var showHiddenFiles: Bool {
@@ -154,6 +166,10 @@ final class AppSettings {
         self.confirmBeforeCleaning = UserDefaults.standard.object(forKey: "confirmBeforeCleaning") as? Bool ?? true
         self.moveToTrash = UserDefaults.standard.object(forKey: "moveToTrash") as? Bool ?? true
         self.excludedPaths = UserDefaults.standard.object(forKey: "excludedPaths") as? [String] ?? []
+        self.protectedPaths = UserDefaults.standard.object(forKey: "protectedPaths") as? [String] ?? CleanerProvider.defaultProtectedPaths
+        self.minimumFileAgeDays = UserDefaults.standard.object(forKey: "minimumFileAgeDays") as? Int ?? 0
+        self.enableDryRunMode = UserDefaults.standard.object(forKey: "enableDryRunMode") as? Bool ?? false
+        self.confirmScheduledTasks = UserDefaults.standard.object(forKey: "confirmScheduledTasks") as? Bool ?? true
         self.showHiddenFiles = UserDefaults.standard.object(forKey: "showHiddenFiles") as? Bool ?? false
         self.minFileSizeForLargeFiles = UserDefaults.standard.object(forKey: "minFileSizeForLargeFiles") as? Int ?? 100
         self.showNotifications = UserDefaults.standard.object(forKey: "showNotifications") as? Bool ?? true

@@ -646,21 +646,43 @@ final class CleanerProvider {
     private(set) var scanProgress: Double = 0
     private(set) var currentScanItem: String = ""
 
-    // Define cleanable paths - ONLY paths that don't require special permissions
-    // Avoid ~/Library/Application Support/* which triggers "access data from other apps" dialogs
-    private let cleanablePaths: [(category: String, icon: String, items: [(name: String, path: String)])] = [
+    // Dry run mode - when enabled, shows what would be deleted without actually deleting
+    var isDryRunMode = false
+    private(set) var dryRunResults: [DryRunResult] = []
+
+    // File age filter - only clean files older than this many days (0 = no filter)
+    var minimumFileAgeDays: Int = 0
+
+    // Safe paths that can be auto-cleaned (caches only - always regeneratable)
+    private let safeAutoCleanPaths: [(category: String, icon: String, items: [(name: String, path: String)])] = [
         ("User caches", "folder.badge.gearshape", [
             ("Safari cache", "~/Library/Caches/com.apple.Safari"),
             ("Chrome cache", "~/Library/Caches/Google/Chrome"),
             ("Firefox cache", "~/Library/Caches/Firefox"),
             ("Xcode DerivedData", "~/Library/Developer/Xcode/DerivedData"),
-            ("Xcode Archives", "~/Library/Developer/Xcode/Archives"),
-            ("Xcode iOS DeviceSupport", "~/Library/Developer/Xcode/iOS DeviceSupport"),
         ]),
+        ("Application caches", "app.badge", [
+            ("Spotify cache", "~/Library/Caches/com.spotify.client"),
+            ("Slack cache", "~/Library/Caches/com.tinyspeck.slackmacgap"),
+            ("Discord cache", "~/Library/Caches/com.hnc.Discord"),
+            ("VS Code cache", "~/Library/Caches/com.microsoft.VSCode"),
+            ("Zoom cache", "~/Library/Caches/us.zoom.xos"),
+            ("Teams cache", "~/Library/Caches/com.microsoft.teams"),
+        ]),
+    ]
+
+    // Paths that require explicit user action (manual cleaning only, not for scheduled tasks)
+    private let manualOnlyPaths: [(category: String, icon: String, items: [(name: String, path: String)], warning: String)] = [
+        ("Downloads", "arrow.down.circle", [
+            ("Old downloads", "~/Downloads"),
+        ], "⚠️ Downloads may contain important files you haven't processed yet"),
+        ("Trash", "trash", [
+            ("Trash", "~/.Trash"),
+        ], "⚠️ Emptying Trash is IRREVERSIBLE - files cannot be recovered"),
         ("System logs", "doc.text", [
             ("User logs", "~/Library/Logs"),
             ("Crash reports", "~/Library/Logs/DiagnosticReports"),
-        ]),
+        ], "⚠️ Logs may be needed for troubleshooting recent issues"),
         ("Developer tools", "hammer", [
             ("npm cache", "~/.npm/_cacache"),
             ("Yarn cache", "~/Library/Caches/Yarn"),
@@ -669,26 +691,29 @@ final class CleanerProvider {
             ("CocoaPods cache", "~/Library/Caches/CocoaPods"),
             ("Gradle cache", "~/.gradle/caches"),
             ("Maven cache", "~/.m2/repository"),
-        ]),
-        ("Application caches", "app.badge", [
-            // Only use ~/Library/Caches paths - these don't trigger privacy dialogs
-            ("Spotify cache", "~/Library/Caches/com.spotify.client"),
-            ("Slack cache", "~/Library/Caches/com.tinyspeck.slackmacgap"),
-            ("Discord cache", "~/Library/Caches/com.hnc.Discord"),
-            ("VS Code cache", "~/Library/Caches/com.microsoft.VSCode"),
-            ("Zoom cache", "~/Library/Caches/us.zoom.xos"),
-            ("Teams cache", "~/Library/Caches/com.microsoft.teams"),
-        ]),
-        ("Downloads", "arrow.down.circle", [
-            ("Old downloads", "~/Downloads"),
-        ]),
-        ("Trash", "trash", [
-            ("Trash", "~/.Trash"),
-        ]),
+            ("Xcode Archives", "~/Library/Developer/Xcode/Archives"),
+            ("Xcode iOS DeviceSupport", "~/Library/Developer/Xcode/iOS DeviceSupport"),
+        ], "⚠️ Developer caches may require lengthy re-downloads to rebuild"),
+    ]
+
+    // Default protected paths that should never be cleaned
+    static let defaultProtectedPaths: [String] = [
+        "~/Documents",
+        "~/Desktop",
+        "~/Pictures",
+        "~/Movies",
+        "~/Music",
+        "~/.ssh",
+        "~/.gnupg",
+        "~/.aws",
+        "~/.kube",
+        "~/Library/Keychains",
+        "~/Library/Application Support/MobileSync", // iOS backups
     ]
 
     /// Scan for actual cleanable items on the system
-    func scanForCleanableItems() async {
+    /// - Parameter forScheduledTask: If true, only scans safe auto-clean paths (no Downloads, Trash, etc.)
+    func scanForCleanableItems(forScheduledTask: Bool = false) async {
         isScanning = true
         error = nil
         categories = []
@@ -697,12 +722,28 @@ final class CleanerProvider {
 
         let homeDir = FileManager.default.homeDirectoryForCurrentUser.path
         let excludedPaths = AppSettings.shared.excludedPaths
+        let protectedPaths = AppSettings.shared.protectedPaths
+
+        // Combine all paths to scan based on context
+        var pathsToScan: [(category: String, icon: String, items: [(name: String, path: String)], warning: String?)] = []
+
+        // Always include safe auto-clean paths
+        for (category, icon, items) in safeAutoCleanPaths {
+            pathsToScan.append((category, icon, items, nil))
+        }
+
+        // Only include manual-only paths if not a scheduled task
+        if !forScheduledTask {
+            for (category, icon, items, warning) in manualOnlyPaths {
+                pathsToScan.append((category, icon, items, warning))
+            }
+        }
 
         // Calculate total items for progress
-        let totalItems = cleanablePaths.reduce(0) { $0 + $1.items.count }
+        let totalItems = pathsToScan.reduce(0) { $0 + $1.items.count }
         var scannedItems = 0
 
-        for (categoryName, icon, items) in cleanablePaths {
+        for (categoryName, icon, items, warning) in pathsToScan {
             var cleaningItems: [CleaningItem] = []
 
             for (name, path) in items {
@@ -718,22 +759,37 @@ final class CleanerProvider {
                     continue
                 }
 
+                // Skip if path is in protected list
+                let expandedProtectedPaths = protectedPaths.map { $0.replacingOccurrences(of: "~", with: homeDir) }
+                if expandedProtectedPaths.contains(where: { expandedPath.hasPrefix($0) || $0.hasPrefix(expandedPath) }) {
+                    continue
+                }
+
                 // Check if path exists
                 guard FileManager.default.fileExists(atPath: expandedPath) else {
                     continue
                 }
 
-                // Get size and file count
-                let (size, fileCount) = await getDirectoryInfo(at: expandedPath)
+                // Get size and file count with age filter
+                let (size, fileCount, eligibleSize, eligibleCount) = await getDirectoryInfoWithAgeFilter(
+                    at: expandedPath,
+                    minAgeDays: minimumFileAgeDays
+                )
 
                 // Only add if there's something to clean (> 1MB)
-                if size > 1_000_000 {
-                    cleaningItems.append(CleaningItem(
+                let effectiveSize = minimumFileAgeDays > 0 ? eligibleSize : size
+                let effectiveCount = minimumFileAgeDays > 0 ? eligibleCount : fileCount
+
+                if effectiveSize > 1_000_000 {
+                    var item = CleaningItem(
                         name: name,
                         path: expandedPath,
-                        size: size,
-                        fileCount: fileCount
-                    ))
+                        size: effectiveSize,
+                        fileCount: effectiveCount
+                    )
+                    item.totalSize = size
+                    item.totalFileCount = fileCount
+                    cleaningItems.append(item)
                 }
             }
 
@@ -741,11 +797,13 @@ final class CleanerProvider {
             if !cleaningItems.isEmpty {
                 // Sort items by size descending
                 cleaningItems.sort { $0.size > $1.size }
-                categories.append(CleaningCategory(
+                var category = CleaningCategory(
                     name: categoryName,
                     icon: icon,
                     items: cleaningItems
-                ))
+                )
+                category.warning = warning
+                categories.append(category)
             }
         }
 
@@ -757,27 +815,49 @@ final class CleanerProvider {
         isScanning = false
     }
 
-    /// Get directory size and file count
-    private func getDirectoryInfo(at path: String) async -> (size: Int64, fileCount: Int) {
+    /// Scan only safe paths for scheduled/automated tasks
+    func scanForScheduledClean() async {
+        await scanForCleanableItems(forScheduledTask: true)
+    }
+
+    /// Get directory size and file count with optional age filtering
+    /// Returns: (totalSize, totalFileCount, eligibleSize, eligibleFileCount)
+    private func getDirectoryInfoWithAgeFilter(at path: String, minAgeDays: Int) async -> (size: Int64, fileCount: Int, eligibleSize: Int64, eligibleCount: Int) {
         var totalSize: Int64 = 0
         var fileCount = 0
+        var eligibleSize: Int64 = 0
+        var eligibleCount = 0
 
         let fileManager = FileManager.default
+        let cutoffDate = minAgeDays > 0 ? Calendar.current.date(byAdding: .day, value: -minAgeDays, to: Date()) : nil
 
         guard let enumerator = fileManager.enumerator(
             at: URL(fileURLWithPath: path),
-            includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey],
+            includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey, .contentModificationDateKey],
             options: [.skipsHiddenFiles]
         ) else {
-            return (0, 0)
+            return (0, 0, 0, 0)
         }
 
         for case let fileURL as URL in enumerator {
             do {
-                let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey])
+                let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey, .contentModificationDateKey])
                 if resourceValues.isRegularFile == true {
-                    totalSize += Int64(resourceValues.fileSize ?? 0)
+                    let size = Int64(resourceValues.fileSize ?? 0)
+                    totalSize += size
                     fileCount += 1
+
+                    // Check if file is old enough
+                    if let cutoff = cutoffDate, let modDate = resourceValues.contentModificationDate {
+                        if modDate < cutoff {
+                            eligibleSize += size
+                            eligibleCount += 1
+                        }
+                    } else {
+                        // No age filter or no mod date - include all
+                        eligibleSize += size
+                        eligibleCount += 1
+                    }
                 }
             } catch {
                 continue
@@ -789,11 +869,74 @@ final class CleanerProvider {
             }
         }
 
-        return (totalSize, fileCount)
+        return (totalSize, fileCount, eligibleSize, eligibleCount)
+    }
+
+    /// Perform a dry run to show what would be deleted without actually deleting
+    func performDryRun() async {
+        dryRunResults = []
+        let cutoffDate = minimumFileAgeDays > 0 ? Calendar.current.date(byAdding: .day, value: -minimumFileAgeDays, to: Date()) : nil
+
+        for category in categories {
+            for item in category.items where item.isSelected {
+                let url = URL(fileURLWithPath: item.path)
+
+                guard let enumerator = FileManager.default.enumerator(
+                    at: url,
+                    includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey, .contentModificationDateKey],
+                    options: [.skipsHiddenFiles]
+                ) else { continue }
+
+                var filesInItem: [(path: String, size: Int64, modDate: Date?)] = []
+
+                for case let fileURL as URL in enumerator {
+                    do {
+                        let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey, .contentModificationDateKey])
+                        if resourceValues.isRegularFile == true {
+                            let size = Int64(resourceValues.fileSize ?? 0)
+                            let modDate = resourceValues.contentModificationDate
+
+                            // Apply age filter
+                            if let cutoff = cutoffDate, let mod = modDate {
+                                if mod >= cutoff { continue } // Skip recent files
+                            }
+
+                            filesInItem.append((fileURL.path, size, modDate))
+                        }
+                    } catch {
+                        continue
+                    }
+
+                    // Limit to first 100 files per item for dry run display
+                    if filesInItem.count >= 100 { break }
+                }
+
+                if !filesInItem.isEmpty {
+                    dryRunResults.append(DryRunResult(
+                        categoryName: category.name,
+                        itemName: item.name,
+                        files: filesInItem.map { DryRunFile(path: $0.path, size: $0.size, modificationDate: $0.modDate) },
+                        totalSize: item.size,
+                        totalFiles: item.fileCount
+                    ))
+                }
+            }
+        }
+    }
+
+    /// Clear dry run results
+    func clearDryRunResults() {
+        dryRunResults = []
     }
 
     /// Clean selected items by moving to Trash
     func cleanSelectedItems() async {
+        // If dry run mode is enabled, just perform dry run
+        if isDryRunMode {
+            await performDryRun()
+            return
+        }
+
         isCleaning = true
         lastCleanedSize = 0
 
@@ -802,6 +945,8 @@ final class CleanerProvider {
         var itemsProcessed = 0
         var failedItems = 0
         var cleanedNames: [String] = []
+
+        let cutoffDate = minimumFileAgeDays > 0 ? Calendar.current.date(byAdding: .day, value: -minimumFileAgeDays, to: Date()) : nil
 
         for category in categories {
             for item in category.items where item.isSelected {
@@ -812,11 +957,17 @@ final class CleanerProvider {
                     // For directories, we'll delete contents but keep the directory
                     if let enumerator = FileManager.default.enumerator(
                         at: url,
-                        includingPropertiesForKeys: nil,
+                        includingPropertiesForKeys: [.contentModificationDateKey],
                         options: [.skipsHiddenFiles]
                     ) {
                         var filesToDelete: [URL] = []
                         for case let fileURL as URL in enumerator {
+                            // Apply age filter if set
+                            if let cutoff = cutoffDate {
+                                if let modDate = try? fileURL.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate {
+                                    if modDate >= cutoff { continue } // Skip recent files
+                                }
+                            }
                             filesToDelete.append(fileURL)
                         }
 
@@ -962,6 +1113,51 @@ final class OptimizerProvider {
             "Correct file associations",
             "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister",
             ["-kill", "-r", "-domain", "local", "-domain", "system", "-domain", "user"],
+            nil
+        ),
+        (
+            "Rebuild font cache",
+            "Clear corrupted font cache to fix display issues",
+            "textformat",
+            "Fixed font rendering",
+            "/usr/bin/atsutil",
+            ["databases", "-remove"],
+            nil
+        ),
+        (
+            "Refresh Dock",
+            "Clear Dock cache and restart to fix display issues",
+            "dock.rectangle",
+            "Fixed Dock appearance",
+            "/usr/bin/killall",
+            ["Dock"],
+            nil
+        ),
+        (
+            "Refresh Finder",
+            "Restart Finder to fix file browser issues",
+            "folder",
+            "Fixed file browsing",
+            "/usr/bin/killall",
+            ["Finder"],
+            nil
+        ),
+        (
+            "Clear memory cache",
+            "Purge inactive memory to reduce memory pressure",
+            "memorychip",
+            "Reduced memory pressure",
+            "/usr/sbin/purge",
+            [],
+            nil
+        ),
+        (
+            "Flush ARP cache",
+            "Clear ARP cache to fix network discovery issues",
+            "wifi",
+            "Better network discovery",
+            "/usr/sbin/arp",
+            ["-a", "-d"],
             nil
         ),
     ]

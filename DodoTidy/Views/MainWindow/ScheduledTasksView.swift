@@ -74,33 +74,62 @@ final class ScheduledTasksManager {
 
     private func executeTask(_ task: ScheduledTask) {
         Task { @MainActor in
-            switch task.taskType {
-            case .cleanCaches:
-                // Select all items and clean
-                DodoTidyService.shared.cleaner.selectAllItems()
-                await DodoTidyService.shared.cleaner.cleanSelectedItems()
-
-            case .cleanLogs:
-                // Select log items only
-                DodoTidyService.shared.cleaner.deselectAllItems()
-                DodoTidyService.shared.cleaner.selectItemsInCategories(containing: "log")
-                await DodoTidyService.shared.cleaner.cleanSelectedItems()
-
-            case .runOptimizations:
-                await DodoTidyService.shared.optimizer.analyzeSystem()
-                await DodoTidyService.shared.optimizer.runAllTasks()
-
-            case .analyzeHome:
-                await DodoTidyService.shared.analyzer.scanHome()
+            // If confirmation is required, send a notification instead of auto-executing
+            if AppSettings.shared.confirmScheduledTasks {
+                sendPendingTaskNotification(for: task)
+                return
             }
 
-            updateLastRun(task.id)
-
-            // Send notification if enabled
-            if AppSettings.shared.showNotifications {
-                sendNotification(for: task)
-            }
+            await performTaskExecution(task)
         }
+    }
+
+    /// Actually perform the task execution (called after confirmation if required)
+    private func performTaskExecution(_ task: ScheduledTask) async {
+        switch task.taskType {
+        case .cleanCaches:
+            // SAFETY: Only scan safe auto-clean paths for scheduled tasks
+            await DodoTidyService.shared.cleaner.scanForScheduledClean()
+            DodoTidyService.shared.cleaner.selectAllItems()
+            await DodoTidyService.shared.cleaner.cleanSelectedItems()
+
+        case .cleanLogs:
+            // SAFETY: Only scan safe auto-clean paths for scheduled tasks
+            await DodoTidyService.shared.cleaner.scanForScheduledClean()
+            DodoTidyService.shared.cleaner.deselectAllItems()
+            DodoTidyService.shared.cleaner.selectItemsInCategories(containing: "log")
+            await DodoTidyService.shared.cleaner.cleanSelectedItems()
+
+        case .runOptimizations:
+            await DodoTidyService.shared.optimizer.analyzeSystem()
+            await DodoTidyService.shared.optimizer.runAllTasks()
+
+        case .analyzeHome:
+            await DodoTidyService.shared.analyzer.scanHome()
+        }
+
+        updateLastRun(task.id)
+
+        // Send completion notification if enabled
+        if AppSettings.shared.showNotifications {
+            sendNotification(for: task)
+        }
+    }
+
+    private func sendPendingTaskNotification(for task: ScheduledTask) {
+        let content = UNMutableNotificationContent()
+        content.title = "Scheduled task ready"
+        content.body = "\(task.name) is ready to run. Open DodoTidy to review and confirm."
+        content.sound = .default
+        content.categoryIdentifier = "SCHEDULED_TASK_PENDING"
+
+        let request = UNNotificationRequest(
+            identifier: "pending-\(task.id.uuidString)",
+            content: content,
+            trigger: nil
+        )
+
+        UNUserNotificationCenter.current().add(request)
     }
 
     private func sendNotification(for task: ScheduledTask) {

@@ -84,6 +84,7 @@ struct CleaningCategory: Identifiable {
     let icon: String
     var items: [CleaningItem]
     var isExpanded: Bool = true
+    var warning: String? = nil  // Safety warning for risky categories
 
     var totalSize: Int64 {
         items.reduce(0) { $0 + $1.size }
@@ -96,15 +97,55 @@ struct CleaningCategory: Identifiable {
     var selectedCount: Int {
         items.filter { $0.isSelected }.count
     }
+
+    var hasWarning: Bool {
+        warning != nil
+    }
 }
 
 struct CleaningItem: Identifiable {
     let id = UUID()
     let name: String
     let path: String
-    let size: Int64
-    let fileCount: Int
+    var size: Int64           // Size of files eligible for cleaning (after age filter)
+    var fileCount: Int        // Count of files eligible for cleaning
     var isSelected: Bool = true
+    var totalSize: Int64 = 0      // Total size including files not eligible
+    var totalFileCount: Int = 0   // Total count including files not eligible
+}
+
+// MARK: - Dry Run Models
+
+struct DryRunResult: Identifiable {
+    let id = UUID()
+    let categoryName: String
+    let itemName: String
+    let files: [DryRunFile]
+    let totalSize: Int64
+    let totalFiles: Int
+
+    var displayedFilesNote: String? {
+        if totalFiles > files.count {
+            return "Showing \(files.count) of \(totalFiles) files"
+        }
+        return nil
+    }
+}
+
+struct DryRunFile: Identifiable {
+    let id = UUID()
+    let path: String
+    let size: Int64
+    let modificationDate: Date?
+
+    var fileName: String {
+        URL(fileURLWithPath: path).lastPathComponent
+    }
+
+    var relativePath: String {
+        let homeDir = FileManager.default.homeDirectoryForCurrentUser.path
+        return path.replacingOccurrences(of: homeDir, with: "~")
+    }
 }
 
 // MARK: - Optimization Models
