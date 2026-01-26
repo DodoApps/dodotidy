@@ -1,0 +1,60 @@
+# Xcode
+build/
+DerivedData/
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.pbxuser
+*.perspectivev3
+
+# Build artifacts
+.build/
+*.app
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.swiftpm/
+Packages/
+Package.resolved
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+.vscode/
+
+# Claude/AI related
+.claude/
+claude.md
+CLAUDE.md
+.anthropic/
+*.jsonl
+
+# Sensitive files
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.mobileprovision
+*.provisionprofile
+secrets/
+credentials/
+
+# Temporary files
+*.tmp
+*.temp
+*.log

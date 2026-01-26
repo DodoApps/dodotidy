@@ -1,0 +1,446 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2B73214A2C75208423928D25 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED324FFAF7332F818F85022F /* AppDelegate.swift */; };
+		2DFDE5BC9E256582B10789DD /* StatusItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678DD44720EF6858921B3F6E /* StatusItemManager.swift */; };
+		38AE7F1A13B6DD74B1DECDE9 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3208A23D8228A0ED66F63B55 /* SidebarView.swift */; };
+		43374FA8B71B5D628FA6C1B9 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 312BB51168B15EC8C0E8D7F0 /* HistoryView.swift */; };
+		6151189DB049E5B2859B5A2C /* DodoTidyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B668439CD23322980411E856 /* DodoTidyService.swift */; };
+		66C44878AC9B05EDE075F156 /* AnalyzerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CF76959838BDEBD8E797691 /* AnalyzerView.swift */; };
+		8E27D5B99A0F32B20F114B97 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF40F686C314510C1C4F632 /* Extensions.swift */; };
+		97CAFF27EA30832E9816C8AF /* SunburstChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18402E09CC8F6AB6B5F4F6C /* SunburstChart.swift */; };
+		9C8F5F8ACD14F831248899BA /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E0F27389EF29DCFE84CE7A /* MainWindowView.swift */; };
+		A82DA1B54DDC41718837FF8B /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6B1DCD1062828D9FA336EB /* MenuBarView.swift */; };
+		B137F138F54FDBFD06483563 /* SystemMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC0B48CCD1E9B0A2B5019245 /* SystemMetrics.swift */; };
+		C4F6A68320647BD70330C7AC /* AppsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5745C17B80FB327DED4D31 /* AppsView.swift */; };
+		CCA20762A17782F6A8ECB60D /* ScheduledTasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D973DA9DB98CEEAEC265D7A9 /* ScheduledTasksView.swift */; };
+		CDBFF1E984B31482FC428F7E /* CleanerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE74AADEE2945CB0F8A8B13E /* CleanerView.swift */; };
+		D43705689F68426DDC8E7CC8 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7A49AC15FB207C550286BE /* DesignSystem.swift */; };
+		DFF07B66EBC2F343722A7956 /* OptimizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B3C6CFD1C3627A78BF364F /* OptimizerView.swift */; };
+		E0F8895DAC381FFADA4585FB /* ScanResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2588DDEA11C20BBD6FB72F /* ScanResult.swift */; };
+		E5AF558C2A2E1075831428C4 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F221F71F744C6002E7A79733 /* DashboardView.swift */; };
+		E60C7225ED35A034B377240D /* DodoTidyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE42A8C23FE2A84B7EA5226 /* DodoTidyApp.swift */; };
+		EC0AB5EBA29261BEF79943BD /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AE2E6586DABD00299462B21 /* ProcessRunner.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		19E0F27389EF29DCFE84CE7A /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
+		312BB51168B15EC8C0E8D7F0 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		3208A23D8228A0ED66F63B55 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		4CF76959838BDEBD8E797691 /* AnalyzerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzerView.swift; sourceTree = "<group>"; };
+		678DD44720EF6858921B3F6E /* StatusItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemManager.swift; sourceTree = "<group>"; };
+		77B3C6CFD1C3627A78BF364F /* OptimizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizerView.swift; sourceTree = "<group>"; };
+		7AE2E6586DABD00299462B21 /* ProcessRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
+		9C2588DDEA11C20BBD6FB72F /* ScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
+		A18402E09CC8F6AB6B5F4F6C /* SunburstChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunburstChart.swift; sourceTree = "<group>"; };
+		AAE42A8C23FE2A84B7EA5226 /* DodoTidyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DodoTidyApp.swift; sourceTree = "<group>"; };
+		AD5745C17B80FB327DED4D31 /* AppsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsView.swift; sourceTree = "<group>"; };
+		AE74AADEE2945CB0F8A8B13E /* CleanerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanerView.swift; sourceTree = "<group>"; };
+		B668439CD23322980411E856 /* DodoTidyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DodoTidyService.swift; sourceTree = "<group>"; };
+		BA7A49AC15FB207C550286BE /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
+		BF6B1DCD1062828D9FA336EB /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		D973DA9DB98CEEAEC265D7A9 /* ScheduledTasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledTasksView.swift; sourceTree = "<group>"; };
+		DC0B48CCD1E9B0A2B5019245 /* SystemMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMetrics.swift; sourceTree = "<group>"; };
+		ED324FFAF7332F818F85022F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EEF40F686C314510C1C4F632 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		EF41CB83AE5CDD4C0E4DD97C /* DodoTidy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DodoTidy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F221F71F744C6002E7A79733 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		637173537884FEC71A8323A5 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				ED324FFAF7332F818F85022F /* AppDelegate.swift */,
+				AAE42A8C23FE2A84B7EA5226 /* DodoTidyApp.swift */,
+				678DD44720EF6858921B3F6E /* StatusItemManager.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		6D96EADF71AFD991AEA5F574 = {
+			isa = PBXGroup;
+			children = (
+				7DA9EC5E897BB8B017B62297 /* DodoTidy */,
+				806DFF53EA8367471B5BECD4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7DA9EC5E897BB8B017B62297 /* DodoTidy */ = {
+			isa = PBXGroup;
+			children = (
+				637173537884FEC71A8323A5 /* App */,
+				867AAFD246F43D8D9C5BFEDC /* Models */,
+				AB46BED999901780DA3BFCA6 /* Services */,
+				E75C658B9C865642B6409647 /* Utilities */,
+				C6A6EA4080E7D4F4DACE15CD /* Views */,
+			);
+			path = DodoTidy;
+			sourceTree = "<group>";
+		};
+		806DFF53EA8367471B5BECD4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EF41CB83AE5CDD4C0E4DD97C /* DodoTidy.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		867AAFD246F43D8D9C5BFEDC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9C2588DDEA11C20BBD6FB72F /* ScanResult.swift */,
+				DC0B48CCD1E9B0A2B5019245 /* SystemMetrics.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A1484CE09699958EAEBAC9A8 /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				BF6B1DCD1062828D9FA336EB /* MenuBarView.swift */,
+			);
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
+		AB46BED999901780DA3BFCA6 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B668439CD23322980411E856 /* DodoTidyService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		C6A6EA4080E7D4F4DACE15CD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F0467786592EC9DAFEBC06DC /* Components */,
+				D7F1FE5547066BBDED55CC3C /* MainWindow */,
+				A1484CE09699958EAEBAC9A8 /* MenuBar */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D7F1FE5547066BBDED55CC3C /* MainWindow */ = {
+			isa = PBXGroup;
+			children = (
+				4CF76959838BDEBD8E797691 /* AnalyzerView.swift */,
+				AD5745C17B80FB327DED4D31 /* AppsView.swift */,
+				AE74AADEE2945CB0F8A8B13E /* CleanerView.swift */,
+				F221F71F744C6002E7A79733 /* DashboardView.swift */,
+				312BB51168B15EC8C0E8D7F0 /* HistoryView.swift */,
+				19E0F27389EF29DCFE84CE7A /* MainWindowView.swift */,
+				77B3C6CFD1C3627A78BF364F /* OptimizerView.swift */,
+				D973DA9DB98CEEAEC265D7A9 /* ScheduledTasksView.swift */,
+				3208A23D8228A0ED66F63B55 /* SidebarView.swift */,
+			);
+			path = MainWindow;
+			sourceTree = "<group>";
+		};
+		E75C658B9C865642B6409647 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				BA7A49AC15FB207C550286BE /* DesignSystem.swift */,
+				EEF40F686C314510C1C4F632 /* Extensions.swift */,
+				7AE2E6586DABD00299462B21 /* ProcessRunner.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		F0467786592EC9DAFEBC06DC /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A18402E09CC8F6AB6B5F4F6C /* SunburstChart.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6E1967C1D0D2D7F90727ABB4 /* DodoTidy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4F1525632E0BE5B9453DD200 /* Build configuration list for PBXNativeTarget "DodoTidy" */;
+			buildPhases = (
+				816067737EEDFC4A2B74B631 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DodoTidy;
+			packageProductDependencies = (
+			);
+			productName = DodoTidy;
+			productReference = EF41CB83AE5CDD4C0E4DD97C /* DodoTidy.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		91B0A4333939E61CEBFAF57E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					6E1967C1D0D2D7F90727ABB4 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 8165167255121D07FF24EE11 /* Build configuration list for PBXProject "DodoTidy" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 6D96EADF71AFD991AEA5F574;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6E1967C1D0D2D7F90727ABB4 /* DodoTidy */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		816067737EEDFC4A2B74B631 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66C44878AC9B05EDE075F156 /* AnalyzerView.swift in Sources */,
+				2B73214A2C75208423928D25 /* AppDelegate.swift in Sources */,
+				C4F6A68320647BD70330C7AC /* AppsView.swift in Sources */,
+				CDBFF1E984B31482FC428F7E /* CleanerView.swift in Sources */,
+				E5AF558C2A2E1075831428C4 /* DashboardView.swift in Sources */,
+				D43705689F68426DDC8E7CC8 /* DesignSystem.swift in Sources */,
+				E60C7225ED35A034B377240D /* DodoTidyApp.swift in Sources */,
+				6151189DB049E5B2859B5A2C /* DodoTidyService.swift in Sources */,
+				8E27D5B99A0F32B20F114B97 /* Extensions.swift in Sources */,
+				43374FA8B71B5D628FA6C1B9 /* HistoryView.swift in Sources */,
+				9C8F5F8ACD14F831248899BA /* MainWindowView.swift in Sources */,
+				A82DA1B54DDC41718837FF8B /* MenuBarView.swift in Sources */,
+				DFF07B66EBC2F343722A7956 /* OptimizerView.swift in Sources */,
+				EC0AB5EBA29261BEF79943BD /* ProcessRunner.swift in Sources */,
+				E0F8895DAC381FFADA4585FB /* ScanResult.swift in Sources */,
+				CCA20762A17782F6A8ECB60D /* ScheduledTasksView.swift in Sources */,
+				38AE7F1A13B6DD74B1DECDE9 /* SidebarView.swift in Sources */,
+				2DFDE5BC9E256582B10789DD /* StatusItemManager.swift in Sources */,
+				97CAFF27EA30832E9816C8AF /* SunburstChart.swift in Sources */,
+				B137F138F54FDBFD06483563 /* SystemMetrics.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		29275EDBB146C1B4E86DA5F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSMainStoryboardFile = "";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		C99897CC117B917DDC871614 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_LSUIElement = YES;
+				INFOPLIST_KEY_NSMainStoryboardFile = "";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CEE43A47E274165CF6AC16FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = DodoTidy;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dodotidy.app;
+				PRODUCT_NAME = DodoTidy;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		FFB05B71580644726233E9E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = DodoTidy;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dodotidy.app;
+				PRODUCT_NAME = DodoTidy;
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4F1525632E0BE5B9453DD200 /* Build configuration list for PBXNativeTarget "DodoTidy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CEE43A47E274165CF6AC16FE /* Debug */,
+				FFB05B71580644726233E9E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8165167255121D07FF24EE11 /* Build configuration list for PBXProject "DodoTidy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C99897CC117B917DDC871614 /* Debug */,
+				29275EDBB146C1B4E86DA5F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 91B0A4333939E61CEBFAF57E /* Project object */;
+}

@@ -1,0 +1,39 @@
+name: DodoTidy
+options:
+  bundleIdPrefix: com.dodotidy
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+  xcodeVersion: "15.0"
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_IDENTITY: "-"
+    CODE_SIGN_STYLE: Manual
+    ENABLE_HARDENED_RUNTIME: NO
+    INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.utilities"
+    INFOPLIST_KEY_NSMainStoryboardFile: ""
+    INFOPLIST_KEY_LSUIElement: YES
+
+targets:
+  DodoTidy:
+    type: application
+    platform: macOS
+    sources:
+      - path: DodoTidy
+        excludes:
+          - "**/*.xcassets"
+          - "Resources/**"
+    resources:
+      - path: DodoTidy/Resources/Assets.xcassets
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dodotidy.app
+        INFOPLIST_KEY_CFBundleDisplayName: "DodoTidy"
+        PRODUCT_NAME: DodoTidy
+        SWIFT_EMIT_LOC_STRINGS: YES
+        GENERATE_INFOPLIST_FILE: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
