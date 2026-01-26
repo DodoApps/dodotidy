@@ -12,6 +12,9 @@ struct DashboardView: View {
                 // Battery & Thermal
                 batteryThermalSection
 
+                // Bluetooth devices
+                bluetoothSection
+
                 // Quick actions
                 quickActionsSection
 
@@ -477,6 +480,107 @@ struct DashboardView: View {
         if battery.status == "Charging" { return .dodoSuccess }
         if battery.percent >= 50 { return .dodoSuccess }
         if battery.percent >= 20 { return .dodoWarning }
+        return .dodoDanger
+    }
+
+    // MARK: - Bluetooth Section
+
+    private var hasBluetoothDevices: Bool {
+        guard let devices = dodoService.status.metrics?.bluetooth else { return false }
+        return !devices.isEmpty
+    }
+
+    @ViewBuilder
+    private var bluetoothSection: some View {
+        if hasBluetoothDevices, let devices = dodoService.status.metrics?.bluetooth {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    Image(systemName: "dot.radiowaves.left.and.right")
+                        .font(.system(size: 16))
+                        .foregroundColor(.dodoInfo)
+
+                    Text("Bluetooth devices")
+                        .font(.dodoSubheadline)
+                        .foregroundColor(.dodoTextSecondary)
+
+                    Spacer()
+
+                    Text("\(devices.count) connected")
+                        .font(.dodoCaption)
+                        .foregroundColor(.dodoTextTertiary)
+                }
+
+                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
+                    ForEach(devices, id: \.name) { device in
+                        HStack(spacing: 10) {
+                            Image(systemName: bluetoothDeviceIcon(for: device.name))
+                                .font(.system(size: 20))
+                                .foregroundColor(.dodoInfo)
+                                .frame(width: 28)
+
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(device.name)
+                                    .font(.dodoSubheadline)
+                                    .foregroundColor(.dodoTextPrimary)
+                                    .lineLimit(1)
+
+                                if device.battery != "N/A" {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: batteryIconForLevel(device.battery))
+                                            .font(.system(size: 10))
+                                            .foregroundColor(batteryColorForLevel(device.battery))
+                                        Text(device.battery)
+                                            .font(.dodoCaptionSmall)
+                                            .foregroundColor(.dodoTextTertiary)
+                                    }
+                                } else {
+                                    Text("Connected")
+                                        .font(.dodoCaptionSmall)
+                                        .foregroundColor(.dodoSuccess)
+                                }
+                            }
+
+                            Spacer()
+                        }
+                        .padding(10)
+                        .background(Color.dodoBackgroundTertiary.opacity(0.5))
+                        .clipShape(RoundedRectangle(cornerRadius: DodoTidyDimensions.borderRadius))
+                    }
+                }
+            }
+            .cardStyle()
+        }
+    }
+
+    private func bluetoothDeviceIcon(for name: String) -> String {
+        let lowercased = name.lowercased()
+        if lowercased.contains("airpods") { return "airpodspro" }
+        if lowercased.contains("headphone") || lowercased.contains("beats") { return "headphones" }
+        if lowercased.contains("keyboard") { return "keyboard" }
+        if lowercased.contains("mouse") || lowercased.contains("trackpad") { return "computermouse" }
+        if lowercased.contains("watch") { return "applewatch" }
+        if lowercased.contains("iphone") || lowercased.contains("phone") { return "iphone" }
+        if lowercased.contains("ipad") { return "ipad" }
+        if lowercased.contains("speaker") || lowercased.contains("homepod") { return "hifispeaker" }
+        return "dot.radiowaves.left.and.right"
+    }
+
+    private func batteryIconForLevel(_ level: String) -> String {
+        guard let percent = Int(level.replacingOccurrences(of: "%", with: "")) else {
+            return "battery.100"
+        }
+        if percent >= 75 { return "battery.100" }
+        if percent >= 50 { return "battery.75" }
+        if percent >= 25 { return "battery.50" }
+        return "battery.25"
+    }
+
+    private func batteryColorForLevel(_ level: String) -> Color {
+        guard let percent = Int(level.replacingOccurrences(of: "%", with: "")) else {
+            return .dodoTextTertiary
+        }
+        if percent >= 50 { return .dodoSuccess }
+        if percent >= 20 { return .dodoWarning }
         return .dodoDanger
     }
 

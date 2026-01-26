@@ -24,10 +24,6 @@ targets:
     platform: macOS
     sources:
       - path: DodoTidy
-        excludes:
-          - "**/*.xcassets"
-          - "Resources/**"
-    resources:
       - path: DodoTidy/Resources/Assets.xcassets
     settings:
       base:

@@ -130,6 +130,9 @@ final class StatusProvider {
         // Get battery info
         let batteryInfo = getBatteryInfo()
 
+        // Get Bluetooth devices
+        let bluetoothDevices = getBluetoothDevices()
+
         // Calculate health score
         let healthScore = calculateHealthScore(
             cpuUsage: cpuUsage,
@@ -186,7 +189,7 @@ final class StatusProvider {
                 batteryPower: 0
             ),
             sensors: nil,
-            bluetooth: nil,
+            bluetooth: bluetoothDevices.isEmpty ? nil : bluetoothDevices,
             topProcesses: nil
         )
     }
@@ -359,6 +362,51 @@ final class StatusProvider {
         }
 
         return batteries
+    }
+
+    private func getBluetoothDevices() -> [BluetoothDevice] {
+        // Use system_profiler to get Bluetooth device information
+        let process = Process()
+        let pipe = Pipe()
+
+        process.executableURL = URL(fileURLWithPath: "/usr/sbin/system_profiler")
+        process.arguments = ["SPBluetoothDataType", "-json"]
+        process.standardOutput = pipe
+        process.standardError = FileHandle.nullDevice
+
+        do {
+            try process.run()
+            process.waitUntilExit()
+
+            let data = pipe.fileHandleForReading.readDataToEndOfFile()
+
+            // Parse the JSON output
+            if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let btData = json["SPBluetoothDataType"] as? [[String: Any]],
+               let firstEntry = btData.first,
+               let connectedDevices = firstEntry["device_connected"] as? [[String: Any]] {
+
+                return connectedDevices.compactMap { device -> BluetoothDevice? in
+                    // Device info is nested under the device name key
+                    guard let deviceName = device.keys.first,
+                          let deviceInfo = device[deviceName] as? [String: Any] else {
+                        return nil
+                    }
+
+                    let batteryLevel = deviceInfo["device_batteryLevelMain"] as? String ?? "N/A"
+
+                    return BluetoothDevice(
+                        name: deviceName,
+                        connected: true,
+                        battery: batteryLevel
+                    )
+                }
+            }
+        } catch {
+            // Silently fail - Bluetooth info is optional
+        }
+
+        return []
     }
 
     private func getMacModel() -> String {
