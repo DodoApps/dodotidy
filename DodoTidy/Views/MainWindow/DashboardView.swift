@@ -38,11 +38,26 @@ struct DashboardView: View {
 
             ToolbarItem(placement: .automatic) {
                 if let metrics = dodoService.status.metrics {
-                    HStack(spacing: 8) {
-                        healthScoreIndicator
-                        Text(metrics.healthScoreMsg)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+                    HStack(spacing: 12) {
+                        // Uptime in topbar
+                        HStack(spacing: 4) {
+                            Image(systemName: "clock")
+                                .font(.system(size: 12))
+                                .foregroundColor(.dodoTextTertiary)
+                            Text(metrics.uptime)
+                                .font(.dodoCaption)
+                                .foregroundColor(.dodoTextSecondary)
+                        }
+
+                        Divider()
+                            .frame(height: 16)
+
+                        HStack(spacing: 8) {
+                            healthScoreIndicator
+                            Text(metrics.healthScoreMsg)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
                     }
                 }
             }
@@ -70,10 +85,8 @@ struct DashboardView: View {
     // MARK: - Metrics Section
 
     private var metricsSection: some View {
-        // Use 2x2 grid if no thermal data, otherwise 3 columns
-        let columns = hasThermalData ? 3 : 2
-
-        return LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: columns), spacing: DodoTidyDimensions.spacing) {
+        // Always use 2x2 grid: CPU, Memory, Disk, Battery (or thermal if no battery)
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: DodoTidyDimensions.spacing) {
             MetricCard(
                 title: "CPU",
                 value: cpuUsage.formattedPercentInt,
@@ -101,22 +114,37 @@ struct DashboardView: View {
                 subtitle: diskDetail
             )
 
-            // Add uptime card if we have 2x2 layout (no thermal)
-            if !hasThermalData {
+            // Battery card next to disk (or placeholder if no battery)
+            if hasBatteryData, let battery = dodoService.status.metrics?.batteries.first {
                 MetricCard(
-                    title: "Uptime",
-                    value: uptimeShort,
-                    icon: "clock",
+                    title: "Battery",
+                    value: "\(Int(battery.percent))%",
+                    icon: batteryIcon,
+                    progress: battery.percent / 100,
+                    color: batteryColor,
+                    subtitle: battery.status
+                )
+            } else if hasThermalData, let thermal = dodoService.status.metrics?.thermal {
+                MetricCard(
+                    title: "Thermal",
+                    value: thermal.cpuTemp > 0 ? String(format: "%.0f°C", thermal.cpuTemp) : "—",
+                    icon: "thermometer.medium",
+                    progress: thermal.cpuTemp > 0 ? min(thermal.cpuTemp / 100, 1.0) : 0,
+                    color: thermalColor(thermal.cpuTemp),
+                    subtitle: thermalStatusMessage(thermal.cpuTemp)
+                )
+            } else {
+                // Placeholder card for consistent grid
+                MetricCard(
+                    title: "System",
+                    value: "OK",
+                    icon: "checkmark.circle",
                     progress: 0,
-                    color: .dodoInfo,
+                    color: .dodoSuccess,
                     subtitle: dodoService.status.metrics?.host ?? "Mac"
                 )
             }
         }
-    }
-
-    private var uptimeShort: String {
-        dodoService.status.metrics?.uptime ?? "—"
     }
 
     // MARK: - Battery & Thermal Section
@@ -135,27 +163,28 @@ struct DashboardView: View {
 
     @ViewBuilder
     private var batteryThermalSection: some View {
-        // Determine layout based on available data
+        // Battery is now in the metrics grid, so only show detailed cards when both exist
+        // or show detailed thermal card when battery exists (battery details are still useful)
         if hasBatteryData && hasThermalData {
-            // Both available - show side by side with equal heights
+            // Both available - show detailed battery and thermal side by side
             HStack(alignment: .top, spacing: DodoTidyDimensions.spacing) {
-                batteryCard
+                batteryDetailCard
                     .frame(maxWidth: .infinity)
                 thermalCard
                     .frame(maxWidth: .infinity)
             }
             .fixedSize(horizontal: false, vertical: true)
         } else if hasBatteryData {
-            // Only battery - show full width
-            batteryCard
+            // Only battery - show detailed battery card
+            batteryDetailCard
         } else if hasThermalData {
-            // Only thermal - show full width
+            // Only thermal - already shown in grid, but show detailed view
             thermalCard
         }
         // If neither, show nothing
     }
 
-    private var batteryCard: some View {
+    private var batteryDetailCard: some View {
         Group {
             if let battery = dodoService.status.metrics?.batteries.first {
                 VStack(alignment: .leading, spacing: 12) {
@@ -403,7 +432,7 @@ struct DashboardView: View {
                     SystemInfoRow(label: "Memory", value: metrics.hardware.totalRAM)
                     SystemInfoRow(label: "Storage", value: metrics.hardware.diskSize)
                     SystemInfoRow(label: "macOS", value: metrics.hardware.osVersion)
-                    SystemInfoRow(label: "Uptime", value: metrics.uptime)
+                    SystemInfoRow(label: "Hostname", value: metrics.host)
                 }
             } else {
                 ProgressView()

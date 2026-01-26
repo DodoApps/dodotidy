@@ -46,6 +46,10 @@ struct AnalyzerView: View {
                     currentPath = FileManager.default.homeDirectoryForCurrentUser.path
                     scanPath()
                 }
+                Button("Desktop") {
+                    currentPath = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Desktop").path
+                    scanPath()
+                }
                 Button("Documents") {
                     currentPath = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Documents").path
                     scanPath()

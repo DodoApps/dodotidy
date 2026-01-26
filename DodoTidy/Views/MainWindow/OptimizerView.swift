@@ -2,6 +2,9 @@ import SwiftUI
 
 struct OptimizerView: View {
     @State private var dodoService = DodoTidyService.shared
+    @State private var taskToConfirm: OptimizationTask?
+    @State private var showConfirmation = false
+    @State private var showRunAllConfirmation = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -32,9 +35,7 @@ struct OptimizerView: View {
             ToolbarItem(placement: .automatic) {
                 if !dodoService.optimizer.tasks.isEmpty {
                     Button {
-                        Task {
-                            await dodoService.optimizer.runAllTasks()
-                        }
+                        showRunAllConfirmation = true
                     } label: {
                         Label("Run all", systemImage: "play.fill")
                     }
@@ -48,6 +49,40 @@ struct OptimizerView: View {
                 await dodoService.optimizer.analyzeSystem()
             }
         }
+        .alert("Confirm optimization", isPresented: $showConfirmation) {
+            Button("Cancel", role: .cancel) {
+                taskToConfirm = nil
+            }
+            Button("Run") {
+                if let task = taskToConfirm {
+                    Task {
+                        await dodoService.optimizer.runTask(task.id)
+                    }
+                }
+                taskToConfirm = nil
+            }
+        } message: {
+            if let task = taskToConfirm {
+                Text("Are you sure you want to run \"\(task.name)\"?\n\n\(task.description)\n\nThis action will execute a system command.")
+            }
+        }
+        .alert("Run all optimizations?", isPresented: $showRunAllConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Run all") {
+                Task {
+                    await dodoService.optimizer.runAllTasks()
+                }
+            }
+        } message: {
+            Text("This will run \(dodoService.optimizer.pendingTaskCount) optimization tasks:\n\n\(pendingTaskNames)\n\nAre you sure you want to continue?")
+        }
+    }
+
+    private var pendingTaskNames: String {
+        dodoService.optimizer.tasks
+            .filter { if case .pending = $0.status { return true } else { return false } }
+            .map { "• \($0.name)" }
+            .joined(separator: "\n")
     }
 
     // MARK: - Loading View
@@ -130,9 +165,8 @@ struct OptimizerView: View {
                 VStack(spacing: DodoTidyDimensions.spacing) {
                     ForEach(dodoService.optimizer.tasks) { task in
                         OptimizationTaskCard(task: task) {
-                            Task {
-                                await dodoService.optimizer.runTask(task.id)
-                            }
+                            taskToConfirm = task
+                            showConfirmation = true
                         }
                     }
                 }
@@ -206,9 +240,7 @@ struct OptimizerView: View {
                 }
 
                 Button {
-                    Task {
-                        await dodoService.optimizer.runAllTasks()
-                    }
+                    showRunAllConfirmation = true
                 } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "bolt.fill")

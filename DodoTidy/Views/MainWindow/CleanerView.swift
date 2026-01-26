@@ -4,6 +4,9 @@ struct CleanerView: View {
     @State private var dodoService = DodoTidyService.shared
     @State private var showConfirmation = false
     @State private var showCleanedAlert = false
+    @State private var showFilePreview = false
+    @State private var previewFiles: [FilePreviewItem] = []
+    @State private var isLoadingPreview = false
 
     // Filtering
     @State private var searchText = ""
@@ -119,6 +122,24 @@ struct CleanerView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text("Successfully freed \(dodoService.cleaner.lastCleanedSize.formattedBytes) of disk space.\n\nItems have been moved to Trash.")
+        }
+        .sheet(isPresented: $showFilePreview) {
+            FilePreviewSheet(
+                previewFiles: previewFiles,
+                totalSize: dodoService.cleaner.totalSelectedSize,
+                totalCount: dodoService.cleaner.totalSelectedCount,
+                isLoading: isLoadingPreview,
+                onConfirm: {
+                    showFilePreview = false
+                    Task {
+                        await dodoService.cleaner.cleanSelectedItems()
+                        showCleanedAlert = true
+                    }
+                },
+                onCancel: {
+                    showFilePreview = false
+                }
+            )
         }
         .navigationTitle("Cleaner")
         .toolbar {
@@ -321,6 +342,72 @@ struct CleanerView: View {
         }
     }
 
+    private func loadFilePreview() {
+        isLoadingPreview = true
+        previewFiles = []
+
+        Task {
+            var files: [FilePreviewItem] = []
+
+            for category in dodoService.cleaner.categories {
+                for item in category.items where item.isSelected {
+                    // Get sample files from this item
+                    let sampleFiles = await getSampleFiles(at: item.path, limit: 20)
+                    files.append(FilePreviewItem(
+                        categoryName: category.name,
+                        itemName: item.name,
+                        itemPath: item.path,
+                        itemSize: item.size,
+                        fileCount: item.fileCount,
+                        sampleFiles: sampleFiles,
+                        warning: category.warning
+                    ))
+                }
+            }
+
+            await MainActor.run {
+                previewFiles = files
+                isLoadingPreview = false
+                showFilePreview = true
+            }
+        }
+    }
+
+    private func getSampleFiles(at path: String, limit: Int) async -> [SampleFile] {
+        var sampleFiles: [SampleFile] = []
+        let fileManager = FileManager.default
+
+        guard let enumerator = fileManager.enumerator(
+            at: URL(fileURLWithPath: path),
+            includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey, .contentModificationDateKey],
+            options: [.skipsHiddenFiles]
+        ) else { return [] }
+
+        for case let fileURL as URL in enumerator {
+            do {
+                let resourceValues = try fileURL.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey, .contentModificationDateKey])
+                if resourceValues.isRegularFile == true {
+                    let size = Int64(resourceValues.fileSize ?? 0)
+                    let modDate = resourceValues.contentModificationDate
+                    sampleFiles.append(SampleFile(
+                        path: fileURL.path,
+                        name: fileURL.lastPathComponent,
+                        size: size,
+                        modificationDate: modDate
+                    ))
+                }
+            } catch {
+                continue
+            }
+
+            if sampleFiles.count >= limit { break }
+        }
+
+        // Sort by size descending
+        sampleFiles.sort { $0.size > $1.size }
+        return sampleFiles
+    }
+
     // MARK: - Loading View
 
     private var loadingView: some View {
@@ -512,20 +599,20 @@ struct CleanerView: View {
             .padding(.trailing, 12)
 
             Button {
-                showConfirmation = true
+                loadFilePreview()
             } label: {
                 HStack(spacing: 6) {
-                    if dodoService.cleaner.isCleaning {
+                    if dodoService.cleaner.isCleaning || isLoadingPreview {
                         ProgressView()
                             .scaleEffect(0.8)
                     } else {
                         Image(systemName: "trash")
                     }
-                    Text(dodoService.cleaner.isCleaning ? "Cleaning..." : "Clean selected")
+                    Text(dodoService.cleaner.isCleaning ? "Cleaning..." : (isLoadingPreview ? "Loading..." : "Clean selected"))
                 }
             }
             .buttonStyle(.dodoPrimary)
-            .disabled(dodoService.cleaner.totalSelectedCount == 0 || dodoService.cleaner.isCleaning)
+            .disabled(dodoService.cleaner.totalSelectedCount == 0 || dodoService.cleaner.isCleaning || isLoadingPreview)
         }
         .padding(DodoTidyDimensions.cardPaddingLarge)
         .background(Color.dodoBackgroundSecondary)
@@ -662,5 +749,286 @@ struct CleaningItemRow: View {
         .onHover { hovering in
             isHovering = hovering
         }
+    }
+}
+
+// MARK: - File Preview Types
+
+struct FilePreviewItem: Identifiable {
+    let id = UUID()
+    let categoryName: String
+    let itemName: String
+    let itemPath: String
+    let itemSize: Int64
+    let fileCount: Int
+    let sampleFiles: [SampleFile]
+    let warning: String?
+}
+
+struct SampleFile: Identifiable {
+    let id = UUID()
+    let path: String
+    let name: String
+    let size: Int64
+    let modificationDate: Date?
+}
+
+// MARK: - File Preview Sheet
+
+struct FilePreviewSheet: View {
+    let previewFiles: [FilePreviewItem]
+    let totalSize: Int64
+    let totalCount: Int
+    let isLoading: Bool
+    let onConfirm: () -> Void
+    let onCancel: () -> Void
+
+    @State private var expandedItems: Set<UUID> = []
+
+    var body: some View {
+        VStack(spacing: 0) {
+            // Header
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundColor(.dodoWarning)
+                            .font(.system(size: 20))
+                        Text("Review files to be deleted")
+                            .font(.dodoTitle)
+                            .foregroundColor(.dodoTextPrimary)
+                    }
+                    Text("The following files will be moved to Trash")
+                        .font(.dodoCaption)
+                        .foregroundColor(.dodoTextTertiary)
+                }
+
+                Spacer()
+
+                Button {
+                    onCancel()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 20))
+                        .foregroundColor(.dodoTextTertiary)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(DodoTidyDimensions.cardPaddingLarge)
+            .background(Color.dodoBackgroundSecondary)
+
+            Divider()
+
+            if isLoading {
+                VStack(spacing: 16) {
+                    ProgressView()
+                    Text("Loading file preview...")
+                        .font(.dodoBody)
+                        .foregroundColor(.dodoTextSecondary)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                // Content
+                ScrollView {
+                    VStack(spacing: 12) {
+                        // Warnings first
+                        ForEach(previewFiles.filter { $0.warning != nil }) { item in
+                            HStack(spacing: 8) {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .foregroundColor(.dodoWarning)
+                                Text(item.warning ?? "")
+                                    .font(.dodoCaption)
+                                    .foregroundColor(.dodoWarning)
+                                Spacer()
+                            }
+                            .padding(12)
+                            .background(Color.dodoWarning.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: DodoTidyDimensions.borderRadius))
+                        }
+
+                        // File items
+                        ForEach(previewFiles) { item in
+                            FilePreviewItemView(
+                                item: item,
+                                isExpanded: expandedItems.contains(item.id),
+                                onToggle: {
+                                    if expandedItems.contains(item.id) {
+                                        expandedItems.remove(item.id)
+                                    } else {
+                                        expandedItems.insert(item.id)
+                                    }
+                                }
+                            )
+                        }
+                    }
+                    .padding(DodoTidyDimensions.cardPaddingLarge)
+                }
+            }
+
+            Divider()
+
+            // Footer
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Total to be removed")
+                        .font(.dodoCaption)
+                        .foregroundColor(.dodoTextTertiary)
+
+                    HStack(spacing: 8) {
+                        Text(totalSize.formattedBytes)
+                            .font(.dodoHeadline)
+                            .foregroundColor(.dodoTextPrimary)
+
+                        Text("(\(totalCount) items)")
+                            .font(.dodoCaption)
+                            .foregroundColor(.dodoTextSecondary)
+                    }
+                }
+
+                Spacer()
+
+                HStack(spacing: 12) {
+                    Button("Cancel") {
+                        onCancel()
+                    }
+                    .buttonStyle(.dodoSecondary)
+
+                    Button {
+                        onConfirm()
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "trash")
+                            Text("Move to Trash")
+                        }
+                    }
+                    .buttonStyle(.dodoPrimary)
+                }
+            }
+            .padding(DodoTidyDimensions.cardPaddingLarge)
+            .background(Color.dodoBackgroundSecondary)
+        }
+        .frame(width: 600, height: 500)
+        .background(Color.dodoBackground)
+    }
+}
+
+// MARK: - File Preview Item View
+
+struct FilePreviewItemView: View {
+    let item: FilePreviewItem
+    let isExpanded: Bool
+    let onToggle: () -> Void
+
+    var body: some View {
+        VStack(spacing: 0) {
+            // Header
+            Button(action: onToggle) {
+                HStack(spacing: 12) {
+                    Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundColor(.dodoTextTertiary)
+                        .frame(width: 12)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(item.itemName)
+                            .font(.dodoSubheadline)
+                            .foregroundColor(.dodoTextPrimary)
+
+                        Text(item.categoryName)
+                            .font(.dodoCaptionSmall)
+                            .foregroundColor(.dodoTextTertiary)
+                    }
+
+                    Spacer()
+
+                    VStack(alignment: .trailing, spacing: 2) {
+                        Text(item.itemSize.formattedBytes)
+                            .font(.dodoBody)
+                            .foregroundColor(.dodoTextSecondary)
+                            .monospacedDigit()
+
+                        Text("\(item.fileCount.formattedWithSeparator) files")
+                            .font(.dodoCaptionSmall)
+                            .foregroundColor(.dodoTextTertiary)
+                    }
+                }
+                .padding(12)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+
+            if isExpanded {
+                Divider()
+                    .padding(.leading, 36)
+
+                VStack(spacing: 0) {
+                    // Path info
+                    HStack {
+                        Text("Path:")
+                            .font(.dodoCaptionSmall)
+                            .foregroundColor(.dodoTextTertiary)
+                        Text(item.itemPath)
+                            .font(.dodoCaptionSmall)
+                            .foregroundColor(.dodoTextSecondary)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                        Spacer()
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(Color.dodoBackgroundTertiary.opacity(0.5))
+
+                    // Sample files
+                    if !item.sampleFiles.isEmpty {
+                        VStack(spacing: 0) {
+                            HStack {
+                                Text("Sample files (showing up to \(item.sampleFiles.count) of \(item.fileCount.formattedWithSeparator)):")
+                                    .font(.dodoCaptionSmall)
+                                    .foregroundColor(.dodoTextTertiary)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+
+                            ForEach(item.sampleFiles) { file in
+                                HStack(spacing: 8) {
+                                    Image(systemName: "doc")
+                                        .font(.system(size: 10))
+                                        .foregroundColor(.dodoTextTertiary)
+                                        .frame(width: 16)
+
+                                    Text(file.name)
+                                        .font(.dodoCaptionSmall)
+                                        .foregroundColor(.dodoTextSecondary)
+                                        .lineLimit(1)
+
+                                    Spacer()
+
+                                    if let modDate = file.modificationDate {
+                                        Text(modDate.formatted(date: .abbreviated, time: .omitted))
+                                            .font(.dodoCaptionSmall)
+                                            .foregroundColor(.dodoTextTertiary)
+                                    }
+
+                                    Text(file.size.formattedBytes)
+                                        .font(.dodoCaptionSmall)
+                                        .foregroundColor(.dodoTextTertiary)
+                                        .monospacedDigit()
+                                        .frame(width: 60, alignment: .trailing)
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 4)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .background(Color.dodoBackgroundSecondary)
+        .clipShape(RoundedRectangle(cornerRadius: DodoTidyDimensions.borderRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: DodoTidyDimensions.borderRadius)
+                .stroke(Color.dodoBorder.opacity(0.2), lineWidth: 1)
+        )
     }
 }
