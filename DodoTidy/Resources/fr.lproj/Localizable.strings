@@ -158,12 +158,17 @@
 "category.trash" = "Corbeille";
 "category.systemLogs" = "Journaux système";
 "category.devTools" = "Outils de développement";
+"category.orphanedAppData" = "Données d'apps orphelines";
 
 /* Warnings */
 "warning.downloads" = "⚠️ Les téléchargements peuvent contenir des fichiers importants non traités";
 "warning.trash" = "⚠️ Vider la Corbeille est IRRÉVERSIBLE - les fichiers ne peuvent pas être récupérés";
 "warning.logs" = "⚠️ Les journaux peuvent être nécessaires pour résoudre des problèmes récents";
 "warning.devCache" = "⚠️ Les caches de développement peuvent nécessiter de longs re-téléchargements";
+"warning.orphanedData" = "⚠️ ATTENTION : Ces dossiers semblent appartenir à des applications désinstallées. Certains peuvent être nécessaires pour des services système ou des apps installées ailleurs (Homebrew, Setapp, etc.). Examinez chaque élément attentivement avant de nettoyer.";
+
+/* Cleaner - Orphan scan */
+"cleaner.scanningOrphans" = "Recherche de données d'apps orphelines...";
 
 /* History */
 "history.title" = "Historique";

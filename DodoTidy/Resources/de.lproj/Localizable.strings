@@ -158,12 +158,17 @@
 "category.trash" = "Papierkorb";
 "category.systemLogs" = "Systemprotokolle";
 "category.devTools" = "Entwicklerwerkzeuge";
+"category.orphanedAppData" = "Verwaiste App-Daten";
 
 /* Warnings */
 "warning.downloads" = "⚠️ Downloads können wichtige Dateien enthalten, die Sie noch nicht verarbeitet haben";
 "warning.trash" = "⚠️ Das Leeren des Papierkorbs ist UNWIDERRUFLICH - Dateien können nicht wiederhergestellt werden";
 "warning.logs" = "⚠️ Protokolle können für die Fehlerbehebung aktueller Probleme benötigt werden";
 "warning.devCache" = "⚠️ Entwickler-Caches können lange Neudownloads zum Wiederherstellen erfordern";
+"warning.orphanedData" = "⚠️ ACHTUNG: Diese Ordner scheinen zu deinstallierten Anwendungen zu gehören. Einige werden möglicherweise von Systemdiensten oder anderswo installierten Apps (Homebrew, Setapp, usw.) benötigt. Überprüfen Sie jeden Eintrag sorgfältig vor dem Bereinigen.";
+
+/* Cleaner - Orphan scan */
+"cleaner.scanningOrphans" = "Suche nach verwaisten App-Daten...";
 
 /* History */
 "history.title" = "Verlauf";

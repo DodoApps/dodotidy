@@ -2,6 +2,7 @@ import Foundation
 import Observation
 import IOKit.ps
 import UserNotifications
+import AppKit
 
 // MARK: - DodoTidy Service (Main Coordinator)
 
@@ -865,6 +866,14 @@ final class CleanerProvider {
         // Sort categories by total size descending
         categories.sort { $0.totalSize > $1.totalSize }
 
+        // Scan for orphaned app data (only for manual scans, not scheduled tasks)
+        if !forScheduledTask {
+            currentScanItem = String(localized: "cleaner.scanningOrphans")
+            if let orphanCategory = await scanForOrphanedAppData() {
+                categories.append(orphanCategory)
+            }
+        }
+
         scanProgress = 1.0
         currentScanItem = ""
         isScanning = false
@@ -1130,6 +1139,243 @@ final class CleanerProvider {
     var totalSelectedCount: Int {
         categories.reduce(0) { $0 + $1.selectedCount }
     }
+
+    // MARK: - Orphaned App Data Detection
+
+    /// Library locations to scan for orphaned app data
+    private let orphanScanLocations: [String] = [
+        "~/Library/Application Support",
+        "~/Library/Caches",
+        "~/Library/Preferences",
+        "~/Library/Containers",
+        "~/Library/Saved Application State",
+        "~/Library/Logs",
+        "~/Library/HTTPStorages",
+        "~/Library/WebKit",
+        "~/Library/Cookies",
+        "~/Library/Group Containers",
+        "~/Library/Application Scripts",
+        "~/Library/LaunchAgents",
+    ]
+
+    /// System folders that should never be flagged as orphaned
+    private let systemSafeFolders: Set<String> = [
+        // Apple system services
+        "com.apple", ".com.apple", "Apple",
+        // macOS built-in apps and services
+        "Accounts", "AddressBook", "Assistant", "Assistants", "Calendars", "CallServices",
+        "CloudDocs", "CloudKit", "CloudStorage", "ColorSync", "Contacts", "CoreData",
+        "CoreFollowUp", "DataAccess", "DataDeliveryServices", "DES", "DoNotDisturb",
+        "FaceTime", "FamilyControls", "Finance", "FindMy", "FrontBoard", "GameCenter",
+        "GeoServices", "HomeKit", "iCloud", "IdentityServices", "IMCore", "iTunes",
+        "Keychain", "Knowledge", "LocationServices", "Mail", "Maps", "Messages",
+        "Metadata", "MobileBackups", "MobileMeAccounts", "Music", "News", "Notes",
+        "Notifications", "PassKit", "Passes", "PersonalizationPortrait", "Photos",
+        "Podcasts", "Reminders", "Safari", "SafariSafeBrowsing", "ScreenTime",
+        "Sharing", "Shortcuts", "Siri", "SiriTTS", "SpeechRecognitionCore", "Spotlight",
+        "StatusKit", "Stocks", "Suggestions", "SyncedPreferences", "SystemConfiguration",
+        "Translation", "TV", "VoiceMemos", "Wallet", "Weather", "WebKit",
+        // Developer tools and runtimes
+        "Developer", "Xcode", "org.swift", "pnpm", "npm", "yarn", "homebrew", "Python",
+        "Microsoft", "Google", "JetBrains",
+        // System components
+        "SystemMigration", "LaunchServices", "LoginWindow", "MCX", "PubSub", "QuickLook",
+        "ScreenSavers", "Security", "Speech", "Spelling", "Trial", "UserNotifications",
+        "kbd", "studentd", "homeenergyd", "com.docker",
+    ]
+
+    /// Scan for orphaned app data from uninstalled applications
+    func scanForOrphanedAppData() async -> CleaningCategory? {
+        let homeDir = FileManager.default.homeDirectoryForCurrentUser.path
+        let fileManager = FileManager.default
+
+        // Step 1: Get all installed apps and their identifiers
+        let installedApps = await getInstalledAppIdentifiers()
+
+        // Step 2: Scan Library locations for folders that don't match any installed app
+        var orphanedItems: [CleaningItem] = []
+
+        for location in orphanScanLocations {
+            let expandedPath = location.replacingOccurrences(of: "~", with: homeDir)
+
+            guard fileManager.fileExists(atPath: expandedPath),
+                  let contents = try? fileManager.contentsOfDirectory(atPath: expandedPath) else {
+                continue
+            }
+
+            for folderName in contents {
+                // Skip hidden files
+                if folderName.hasPrefix(".") && !folderName.hasPrefix(".com.") {
+                    continue
+                }
+
+                // Skip system safe folders
+                if isSystemSafeFolder(folderName) {
+                    continue
+                }
+
+                // Check if this folder matches any installed app
+                if !matchesInstalledApp(folderName: folderName, installedApps: installedApps) {
+                    let folderPath = (expandedPath as NSString).appendingPathComponent(folderName)
+
+                    // Get folder size
+                    let (size, fileCount, _, _) = await getDirectoryInfoWithAgeFilter(at: folderPath, minAgeDays: 0)
+
+                    // Include all sizes (no threshold for orphaned data)
+                    if size > 0 {
+                        let locationName = (location as NSString).lastPathComponent
+                        var item = CleaningItem(
+                            name: "\(folderName)",
+                            path: folderPath,
+                            size: size,
+                            fileCount: fileCount
+                        )
+                        item.isSelected = false // Default to unselected for safety
+                        item.locationHint = locationName
+                        orphanedItems.append(item)
+                    }
+                }
+            }
+        }
+
+        // Only return category if we found orphaned items
+        guard !orphanedItems.isEmpty else { return nil }
+
+        // Sort by size descending
+        orphanedItems.sort { $0.size > $1.size }
+
+        var category = CleaningCategory(
+            name: String(localized: "category.orphanedAppData"),
+            icon: "questionmark.folder",
+            items: orphanedItems
+        )
+        category.warning = String(localized: "warning.orphanedData")
+
+        return category
+    }
+
+    /// Check if a folder name matches system safe folders
+    private func isSystemSafeFolder(_ folderName: String) -> Bool {
+        let lowerName = folderName.lowercased()
+
+        for safeFolder in systemSafeFolders {
+            let lowerSafe = safeFolder.lowercased()
+            // Check if folder name starts with, contains, or equals safe folder name
+            if lowerName == lowerSafe ||
+               lowerName.hasPrefix(lowerSafe + ".") ||
+               lowerName.hasPrefix(lowerSafe + "-") ||
+               lowerName.contains(".\(lowerSafe).") {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    /// Get identifiers for all installed applications
+    private func getInstalledAppIdentifiers() async -> InstalledAppIdentifiers {
+        var identifiers = InstalledAppIdentifiers()
+        let fileManager = FileManager.default
+
+        // Scan /Applications
+        let appPaths = ["/Applications", "/System/Applications"]
+
+        for appPath in appPaths {
+            guard let contents = try? fileManager.contentsOfDirectory(atPath: appPath) else { continue }
+
+            for item in contents where item.hasSuffix(".app") {
+                let fullPath = (appPath as NSString).appendingPathComponent(item)
+                let appName = (item as NSString).deletingPathExtension
+
+                // Add app name variations
+                identifiers.appNames.insert(appName.lowercased())
+                identifiers.appNames.insert(appName.lowercased().replacingOccurrences(of: " ", with: ""))
+                identifiers.appNames.insert(appName.lowercased().replacingOccurrences(of: " ", with: "-"))
+
+                // Try to get bundle identifier from Info.plist
+                let plistPath = (fullPath as NSString).appendingPathComponent("Contents/Info.plist")
+                if let plistData = fileManager.contents(atPath: plistPath),
+                   let plist = try? PropertyListSerialization.propertyList(from: plistData, format: nil) as? [String: Any],
+                   let bundleId = plist["CFBundleIdentifier"] as? String {
+                    identifiers.bundleIds.insert(bundleId.lowercased())
+
+                    // Also extract components (e.g., "com.spotify.client" -> "spotify")
+                    let components = bundleId.lowercased().split(separator: ".")
+                    for component in components {
+                        let comp = String(component)
+                        if comp != "com" && comp != "app" && comp != "client" && comp != "macos" && comp != "mac" && comp.count > 2 {
+                            identifiers.bundleIdComponents.insert(comp)
+                        }
+                    }
+                }
+            }
+        }
+
+        // Also add running processes as installed (they might be background apps)
+        let runningApps = NSWorkspace.shared.runningApplications
+        for app in runningApps {
+            if let bundleId = app.bundleIdentifier {
+                identifiers.bundleIds.insert(bundleId.lowercased())
+            }
+            if let name = app.localizedName {
+                identifiers.appNames.insert(name.lowercased())
+            }
+        }
+
+        return identifiers
+    }
+
+    /// Check if a folder name matches any installed app
+    private func matchesInstalledApp(folderName: String, installedApps: InstalledAppIdentifiers) -> Bool {
+        let lowerName = folderName.lowercased()
+
+        // Direct match with app names
+        if installedApps.appNames.contains(lowerName) {
+            return true
+        }
+
+        // Direct match with bundle IDs
+        if installedApps.bundleIds.contains(lowerName) {
+            return true
+        }
+
+        // Check if folder name contains any app name or bundle ID component
+        for appName in installedApps.appNames {
+            if lowerName.contains(appName) || appName.contains(lowerName) {
+                return true
+            }
+        }
+
+        for bundleId in installedApps.bundleIds {
+            if lowerName == bundleId || lowerName.hasPrefix(bundleId) || bundleId.hasPrefix(lowerName) {
+                return true
+            }
+        }
+
+        // Check bundle ID components (fuzzy match)
+        for component in installedApps.bundleIdComponents {
+            if lowerName.contains(component) {
+                return true
+            }
+        }
+
+        // Handle savedState format: "com.example.app.savedState" -> check "com.example.app"
+        if lowerName.hasSuffix(".savedstate") {
+            let baseName = String(lowerName.dropLast(11)) // Remove ".savedstate"
+            if installedApps.bundleIds.contains(baseName) {
+                return true
+            }
+        }
+
+        return false
+    }
+}
+
+/// Helper struct to store installed app identifiers for matching
+private struct InstalledAppIdentifiers {
+    var appNames: Set<String> = []
+    var bundleIds: Set<String> = []
+    var bundleIdComponents: Set<String> = []
 }
 
 // MARK: - Optimizer Provider

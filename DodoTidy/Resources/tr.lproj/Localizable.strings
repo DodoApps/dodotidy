@@ -159,12 +159,17 @@
 "category.trash" = "Çöp Kutusu";
 "category.systemLogs" = "Sistem günlükleri";
 "category.devTools" = "Geliştirici araçları";
+"category.orphanedAppData" = "Artık uygulama verileri";
 
 /* Warnings */
 "warning.downloads" = "⚠️ İndirilenler henüz işlemediğiniz önemli dosyalar içerebilir";
 "warning.trash" = "⚠️ Çöp Kutusunu boşaltmak GERİ ALINAMAZ - dosyalar kurtarılamaz";
 "warning.logs" = "⚠️ Günlükler son sorunların giderilmesi için gerekli olabilir";
 "warning.devCache" = "⚠️ Geliştirici önbellekleri yeniden oluşturmak için uzun indirmeler gerektirebilir";
+"warning.orphanedData" = "⚠️ DİKKAT: Bu klasörler kaldırılmış uygulamalara ait görünüyor. Bazıları sistem servisleri veya başka yerlere kurulu uygulamalar (Homebrew, Setapp, vb.) için gerekli olabilir. Temizlemeden önce her öğeyi dikkatlice inceleyin.";
+
+/* Cleaner - Orphan scan */
+"cleaner.scanningOrphans" = "Artık uygulama verileri taranıyor...";
 
 /* History */
 "history.title" = "Geçmiş";

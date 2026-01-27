@@ -782,9 +782,21 @@ struct CleaningItemRow: View {
                     .font(.dodoBody)
                     .foregroundColor(.dodoTextPrimary)
 
-                Text(String(format: String(localized: "cleaner.files"), item.fileCount.formattedWithSeparator))
-                    .font(.dodoCaptionSmall)
-                    .foregroundColor(.dodoTextTertiary)
+                HStack(spacing: 6) {
+                    Text(String(format: String(localized: "cleaner.files"), item.fileCount.formattedWithSeparator))
+                        .font(.dodoCaptionSmall)
+                        .foregroundColor(.dodoTextTertiary)
+
+                    // Show location hint for orphaned items
+                    if let location = item.locationHint {
+                        Text("•")
+                            .font(.dodoCaptionSmall)
+                            .foregroundColor(.dodoTextTertiary)
+                        Text(location)
+                            .font(.dodoCaptionSmall)
+                            .foregroundColor(.dodoTextTertiary)
+                    }
+                }
             }
 
             Spacer()

@@ -112,6 +112,7 @@ struct CleaningItem: Identifiable {
     var isSelected: Bool = true
     var totalSize: Int64 = 0      // Total size including files not eligible
     var totalFileCount: Int = 0   // Total count including files not eligible
+    var locationHint: String? = nil  // Optional hint about the Library location (for orphaned data)
 }
 
 // MARK: - Dry Run Models
