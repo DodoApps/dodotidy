@@ -173,10 +173,13 @@ struct MenuBarHeaderView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 12) {
-                // App icon
-                Image(systemName: "leaf.circle.fill")
-                    .font(.system(size: 32))
-                    .foregroundStyle(.green)
+                // App icon from bundle
+                if let appIcon = NSApp.applicationIconImage {
+                    Image(nsImage: appIcon)
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("DodoTidy")
