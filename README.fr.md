@@ -85,12 +85,29 @@ L'optimiseur n'exécute que des commandes système connues et sûres :
 
 Aucune commande système destructive ou risquée n'est incluse.
 
+## Installation
+
+### Homebrew (Recommandé)
+
+```bash
+brew tap bluewave-labs/dodotidy
+brew install --cask dodotidy
+```
+
+### Installation manuelle
+
+1. Téléchargez le dernier DMG depuis [Releases](https://github.com/bluewave-labs/DodoTidy/releases)
+2. Ouvrez le DMG et faites glisser DodoTidy vers Applications
+3. Faites un clic droit et sélectionnez "Ouvrir" lors du premier lancement (requis pour les applications non signées)
+
+Ou exécutez : `xattr -cr /Applications/DodoTidy.app`
+
 ## Configuration requise
 
 - macOS 14.0 ou ultérieur
-- Xcode 15.0 ou ultérieur (pour la compilation)
+- Xcode 15.0 ou ultérieur (pour la compilation à partir du code source)
 
-## Compilation
+## Compilation à partir du code source
 
 ### Avec XcodeGen (Recommandé)
 

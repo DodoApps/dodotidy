@@ -85,12 +85,29 @@ Optimize edici yalnızca iyi bilinen, güvenli sistem komutlarını çalıştır
 
 Yıkıcı veya riskli sistem komutları dahil değildir.
 
+## Kurulum
+
+### Homebrew (Önerilen)
+
+```bash
+brew tap bluewave-labs/dodotidy
+brew install --cask dodotidy
+```
+
+### Manuel Kurulum
+
+1. [Releases](https://github.com/bluewave-labs/DodoTidy/releases) sayfasından en son DMG dosyasını indirin
+2. DMG dosyasını açın ve DodoTidy'yi Uygulamalar klasörüne sürükleyin
+3. İlk açılışta sağ tıklayıp "Aç" seçeneğini seçin (imzasız uygulamalar için gerekli)
+
+Veya şu komutu çalıştırın: `xattr -cr /Applications/DodoTidy.app`
+
 ## Gereksinimler
 
 - macOS 14.0 veya üzeri
-- Xcode 15.0 veya üzeri (derleme için)
+- Xcode 15.0 veya üzeri (kaynak koddan derleme için)
 
-## Derleme
+## Kaynak Koddan Derleme
 
 ### XcodeGen Kullanarak (Önerilen)
 
