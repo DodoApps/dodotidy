@@ -109,10 +109,11 @@ struct CleaningItem: Identifiable {
     let path: String
     var size: Int64           // Size of files eligible for cleaning (after age filter)
     var fileCount: Int        // Count of files eligible for cleaning
-    var isSelected: Bool = true
+    var isSelected: Bool = false  // Default to unselected for safety
     var totalSize: Int64 = 0      // Total size including files not eligible
     var totalFileCount: Int = 0   // Total count including files not eligible
     var locationHint: String? = nil  // Optional hint about the Library location (for orphaned data)
+    var deleteEntireFolder: Bool = false  // If true, delete the folder itself; if false, only delete contents
 }
 
 // MARK: - Dry Run Models

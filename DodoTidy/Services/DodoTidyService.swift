@@ -1018,26 +1018,31 @@ final class CleanerProvider {
                     // Move to trash instead of permanent delete
                     let url = URL(fileURLWithPath: item.path)
 
-                    // For directories, we'll delete contents but keep the directory
-                    if let enumerator = FileManager.default.enumerator(
-                        at: url,
-                        includingPropertiesForKeys: [.contentModificationDateKey],
-                        options: [.skipsHiddenFiles]
-                    ) {
-                        var filesToDelete: [URL] = []
-                        for case let fileURL as URL in enumerator {
-                            // Apply age filter if set
-                            if let cutoff = cutoffDate {
-                                if let modDate = try? fileURL.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate {
-                                    if modDate >= cutoff { continue } // Skip recent files
+                    if item.deleteEntireFolder {
+                        // For orphaned app data, delete the entire folder
+                        try FileManager.default.trashItem(at: url, resultingItemURL: nil)
+                    } else {
+                        // For cache directories, delete contents but keep the directory
+                        if let enumerator = FileManager.default.enumerator(
+                            at: url,
+                            includingPropertiesForKeys: [.contentModificationDateKey],
+                            options: [.skipsHiddenFiles]
+                        ) {
+                            var filesToDelete: [URL] = []
+                            for case let fileURL as URL in enumerator {
+                                // Apply age filter if set
+                                if let cutoff = cutoffDate {
+                                    if let modDate = try? fileURL.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate {
+                                        if modDate >= cutoff { continue } // Skip recent files
+                                    }
                                 }
+                                filesToDelete.append(fileURL)
                             }
-                            filesToDelete.append(fileURL)
-                        }
 
-                        // Delete in reverse order (deepest first)
-                        for fileURL in filesToDelete.reversed() {
-                            try? FileManager.default.trashItem(at: fileURL, resultingItemURL: nil)
+                            // Delete in reverse order (deepest first)
+                            for fileURL in filesToDelete.reversed() {
+                                try? FileManager.default.trashItem(at: fileURL, resultingItemURL: nil)
+                            }
                         }
                     }
 
@@ -1068,8 +1073,14 @@ final class CleanerProvider {
         )
         OperationHistoryManager.shared.addOperation(operation)
 
-        // Rescan to update sizes
-        await scanForCleanableItems()
+        // Remove cleaned items from categories instead of rescanning
+        for categoryIndex in categories.indices.reversed() {
+            categories[categoryIndex].items.removeAll { $0.isSelected }
+            // Remove empty categories
+            if categories[categoryIndex].items.isEmpty {
+                categories.remove(at: categoryIndex)
+            }
+        }
 
         isCleaning = false
     }
@@ -1230,8 +1241,8 @@ final class CleanerProvider {
                             size: size,
                             fileCount: fileCount
                         )
-                        item.isSelected = false // Default to unselected for safety
                         item.locationHint = locationName
+                        item.deleteEntireFolder = true  // Orphaned data should delete the entire folder
                         orphanedItems.append(item)
                     }
                 }
@@ -1299,11 +1310,19 @@ final class CleanerProvider {
                    let bundleId = plist["CFBundleIdentifier"] as? String {
                     identifiers.bundleIds.insert(bundleId.lowercased())
 
-                    // Also extract components (e.g., "com.spotify.client" -> "spotify")
+                    // Also extract meaningful components (e.g., "com.spotify.client" -> "spotify")
+                    // Only keep components that are likely app identifiers (5+ chars, not common words)
+                    let commonWords: Set<String> = [
+                        "com", "app", "client", "macos", "mac", "ios", "desktop", "mobile",
+                        "browser", "electron", "native", "beta", "alpha", "pro", "free",
+                        "lite", "plus", "premium", "enterprise", "personal", "business",
+                        "helper", "agent", "daemon", "service", "updater", "installer",
+                        "launcher", "manager", "editor", "viewer", "player", "reader"
+                    ]
                     let components = bundleId.lowercased().split(separator: ".")
                     for component in components {
                         let comp = String(component)
-                        if comp != "com" && comp != "app" && comp != "client" && comp != "macos" && comp != "mac" && comp.count > 2 {
+                        if comp.count >= 5 && !commonWords.contains(comp) {
                             identifiers.bundleIdComponents.insert(comp)
                         }
                     }
@@ -1339,22 +1358,35 @@ final class CleanerProvider {
             return true
         }
 
-        // Check if folder name contains any app name or bundle ID component
+        // Check if folder name starts with or equals an app name (more precise)
         for appName in installedApps.appNames {
-            if lowerName.contains(appName) || appName.contains(lowerName) {
+            // Only match if folder starts with app name or app name starts with folder
+            // and the match is substantial (at least 4 chars)
+            if appName.count >= 4 && lowerName.count >= 4 {
+                if lowerName.hasPrefix(appName) || appName.hasPrefix(lowerName) {
+                    return true
+                }
+            }
+            // Exact match for shorter names
+            if lowerName == appName {
                 return true
             }
         }
 
+        // Check if folder name matches bundle ID pattern
         for bundleId in installedApps.bundleIds {
-            if lowerName == bundleId || lowerName.hasPrefix(bundleId) || bundleId.hasPrefix(lowerName) {
+            if lowerName == bundleId || lowerName.hasPrefix(bundleId + ".") || bundleId.hasPrefix(lowerName + ".") {
+                return true
+            }
+            // Also check if bundleId ends with the folder name (e.g., "com.anthropic.claude" matches "claude")
+            if bundleId.hasSuffix("." + lowerName) {
                 return true
             }
         }
 
-        // Check bundle ID components (fuzzy match)
+        // Check bundle ID components - only exact matches for components >= 5 chars
         for component in installedApps.bundleIdComponents {
-            if lowerName.contains(component) {
+            if component.count >= 5 && lowerName == component {
                 return true
             }
         }

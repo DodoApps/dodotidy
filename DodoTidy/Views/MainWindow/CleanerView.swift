@@ -90,8 +90,11 @@ struct CleanerView: View {
                 .background(Color.dodoBorder.opacity(0.2))
 
             if dodoService.cleaner.isScanning {
-                // Loading state
+                // Scanning state
                 loadingView
+            } else if dodoService.cleaner.isCleaning {
+                // Cleaning state
+                cleaningView
             } else if let error = dodoService.cleaner.error {
                 // Error state
                 errorView(error: error)
@@ -499,6 +502,47 @@ struct CleanerView: View {
         }
     }
 
+    // MARK: - Cleaning State
+
+    @State private var cleaningRotation: Double = 0
+
+    private var cleaningView: some View {
+        VStack(spacing: 24) {
+            ZStack {
+                // Spinning circle
+                Circle()
+                    .stroke(Color.dodoPrimary.opacity(0.2), lineWidth: 4)
+                    .frame(width: 90, height: 90)
+
+                Circle()
+                    .trim(from: 0, to: 0.3)
+                    .stroke(Color.dodoPrimary, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                    .frame(width: 90, height: 90)
+                    .rotationEffect(.degrees(cleaningRotation))
+
+                Image(systemName: "trash.fill")
+                    .font(.system(size: 36))
+                    .foregroundColor(.dodoPrimary)
+            }
+            .onAppear {
+                withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+                    cleaningRotation = 360
+                }
+            }
+
+            VStack(spacing: 8) {
+                Text(String(localized: "cleaner.cleaning"))
+                    .font(.dodoBody)
+                    .foregroundColor(.dodoTextSecondary)
+
+                Text(String(localized: "cleaner.movedToTrash"))
+                    .font(.dodoCaption)
+                    .foregroundColor(.dodoTextTertiary)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
     // MARK: - Error State
 
     private func errorView(error: Error) -> some View {
@@ -755,9 +799,9 @@ struct CleaningItemRow: View {
     @State private var isHovering = false
 
     var body: some View {
-        HStack(spacing: 12) {
-            // Checkbox
-            Button(action: onToggle) {
+        Button(action: onToggle) {
+            HStack(spacing: 12) {
+                // Checkbox
                 ZStack {
                     RoundedRectangle(cornerRadius: 4)
                         .stroke(item.isSelected ? Color.dodoPrimary : Color.dodoBorder, lineWidth: 1.5)
@@ -773,42 +817,43 @@ struct CleaningItemRow: View {
                             .foregroundColor(.white)
                     }
                 }
-            }
-            .buttonStyle(.plain)
 
-            // Item info
-            VStack(alignment: .leading, spacing: 2) {
-                Text(item.name)
-                    .font(.dodoBody)
-                    .foregroundColor(.dodoTextPrimary)
+                // Item info
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(item.name)
+                        .font(.dodoBody)
+                        .foregroundColor(.dodoTextPrimary)
 
-                HStack(spacing: 6) {
-                    Text(String(format: String(localized: "cleaner.files"), item.fileCount.formattedWithSeparator))
-                        .font(.dodoCaptionSmall)
-                        .foregroundColor(.dodoTextTertiary)
-
-                    // Show location hint for orphaned items
-                    if let location = item.locationHint {
-                        Text("•")
+                    HStack(spacing: 6) {
+                        Text(String(format: String(localized: "cleaner.files"), item.fileCount.formattedWithSeparator))
                             .font(.dodoCaptionSmall)
                             .foregroundColor(.dodoTextTertiary)
-                        Text(location)
-                            .font(.dodoCaptionSmall)
-                            .foregroundColor(.dodoTextTertiary)
+
+                        // Show location hint for orphaned items
+                        if let location = item.locationHint {
+                            Text("•")
+                                .font(.dodoCaptionSmall)
+                                .foregroundColor(.dodoTextTertiary)
+                            Text(location)
+                                .font(.dodoCaptionSmall)
+                                .foregroundColor(.dodoTextTertiary)
+                        }
                     }
                 }
+
+                Spacer()
+
+                // Size
+                Text(item.size.formattedBytes)
+                    .font(.dodoBody)
+                    .foregroundColor(.dodoTextSecondary)
+                    .monospacedDigit()
             }
-
-            Spacer()
-
-            // Size
-            Text(item.size.formattedBytes)
-                .font(.dodoBody)
-                .foregroundColor(.dodoTextSecondary)
-                .monospacedDigit()
+            .padding(.horizontal, DodoTidyDimensions.cardPadding)
+            .padding(.vertical, 10)
+            .contentShape(Rectangle())
         }
-        .padding(.horizontal, DodoTidyDimensions.cardPadding)
-        .padding(.vertical, 10)
+        .buttonStyle(.plain)
         .background(isHovering ? Color.dodoBackgroundTertiary.opacity(0.5) : Color.clear)
         .onHover { hovering in
             isHovering = hovering
