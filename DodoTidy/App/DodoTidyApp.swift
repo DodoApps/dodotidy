@@ -12,9 +12,11 @@ struct DodoTidyApp: App {
                 .frame(minWidth: 1000, minHeight: 700)
                 .background(Color.dodoBackground)
                 .preferredColorScheme(.dark)
+                .toolbarBackground(Color.dodoBackground, for: .windowToolbar)
+                .toolbarBackground(.visible, for: .windowToolbar)
         }
         .windowStyle(.automatic)
-        .windowToolbarStyle(.unified(showsTitle: true))
+        .windowToolbarStyle(.unifiedCompact)
         .defaultSize(width: 1280, height: 800)
         .commands {
             CommandGroup(replacing: .newItem) { }

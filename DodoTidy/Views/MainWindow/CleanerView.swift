@@ -243,7 +243,7 @@ struct CleanerView: View {
                     Image(systemName: "arrow.up.arrow.down")
                     Text(minSizeFilter.rawValue)
                     Image(systemName: "chevron.down")
-                        .font(.system(size: 10))
+                        .font(.system(size: 11))
                 }
                 .foregroundColor(minSizeFilter == .any ? .dodoTextSecondary : .dodoPrimary)
             }
@@ -279,7 +279,7 @@ struct CleanerView: View {
                     Image(systemName: "line.3.horizontal.decrease.circle")
                     Text(selectedCategories.isEmpty ? "Categories" : "\(selectedCategories.count) selected")
                     Image(systemName: "chevron.down")
-                        .font(.system(size: 10))
+                        .font(.system(size: 11))
                 }
                 .foregroundColor(selectedCategories.isEmpty ? .dodoTextSecondary : .dodoPrimary)
             }
@@ -717,7 +717,7 @@ struct CleaningItemRow: View {
                             .frame(width: 18, height: 18)
 
                         Image(systemName: "checkmark")
-                            .font(.system(size: 10, weight: .bold))
+                            .font(.system(size: 11, weight: .bold))
                             .foregroundColor(.white)
                     }
                 }
@@ -925,7 +925,7 @@ struct FilePreviewItemView: View {
             Button(action: onToggle) {
                 HStack(spacing: 12) {
                     Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(.dodoTextTertiary)
                         .frame(width: 12)
 
@@ -993,7 +993,7 @@ struct FilePreviewItemView: View {
                             ForEach(item.sampleFiles) { file in
                                 HStack(spacing: 8) {
                                     Image(systemName: "doc")
-                                        .font(.system(size: 10))
+                                        .font(.system(size: 11))
                                         .foregroundColor(.dodoTextTertiary)
                                         .frame(width: 16)
 

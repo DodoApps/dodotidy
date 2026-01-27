@@ -192,15 +192,15 @@ struct MenuBarHeaderView: View {
             }
 
             Text("© 2026 Gorkem Cetin")
-                .font(.system(size: 10))
+                .font(.system(size: 11))
                 .foregroundStyle(.tertiary)
 
             Link(destination: URL(string: "https://github.com/bluewave-labs/DodoTidy")!) {
                 HStack(spacing: 4) {
                     Image(systemName: "link")
-                        .font(.system(size: 9))
-                    Text("github.com/bluewave-labs/DodoTidy")
                         .font(.system(size: 10))
+                    Text("github.com/bluewave-labs/DodoTidy")
+                        .font(.system(size: 11))
                 }
                 .foregroundStyle(.blue)
             }

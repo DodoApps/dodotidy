@@ -8,9 +8,16 @@ struct SidebarView: View {
         VStack(spacing: 0) {
             // Logo / App header
             HStack(spacing: 10) {
-                Image(systemName: "leaf.circle.fill")
-                    .font(.system(size: 28))
-                    .foregroundColor(.dodoPrimary)
+                if let appIcon = NSApp.applicationIconImage {
+                    Image(nsImage: appIcon)
+                        .resizable()
+                        .frame(width: 32, height: 32)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                } else {
+                    Image(systemName: "leaf.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundColor(.dodoPrimary)
+                }
 
                 Text("DodoTidy")
                     .font(.dodoTitle)
@@ -20,9 +27,6 @@ struct SidebarView: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 20)
-
-            Divider()
-                .background(Color.dodoBorder.opacity(0.2))
 
             // Navigation items
             ScrollView {

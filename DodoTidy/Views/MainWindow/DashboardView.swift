@@ -38,47 +38,16 @@ struct DashboardView: View {
 
             ToolbarItem(placement: .automatic) {
                 if let metrics = dodoService.status.metrics {
-                    HStack(spacing: 12) {
-                        // Uptime in topbar
-                        HStack(spacing: 4) {
-                            Image(systemName: "clock")
-                                .font(.system(size: 12))
-                                .foregroundColor(.dodoTextTertiary)
-                            Text(metrics.uptime)
-                                .font(.dodoCaption)
-                                .foregroundColor(.dodoTextSecondary)
-                        }
-
-                        Divider()
-                            .frame(height: 16)
-
-                        HStack(spacing: 8) {
-                            healthScoreIndicator
-                            Text(metrics.healthScoreMsg)
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
+                    HStack(spacing: 4) {
+                        Image(systemName: "clock")
+                            .font(.system(size: 12))
+                            .foregroundColor(.dodoTextTertiary)
+                        Text(metrics.uptime)
+                            .font(.dodoCaption)
+                            .foregroundColor(.dodoTextSecondary)
                     }
                 }
             }
-        }
-    }
-
-    private var healthScoreIndicator: some View {
-        ZStack {
-            Circle()
-                .stroke(Color.secondary.opacity(0.2), lineWidth: 3)
-                .frame(width: 24, height: 24)
-
-            Circle()
-                .trim(from: 0, to: CGFloat(healthScore) / 100)
-                .stroke(healthScoreColor, style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                .frame(width: 24, height: 24)
-                .rotationEffect(.degrees(-90))
-
-            Text("\(healthScore)")
-                .font(.system(size: 8, weight: .bold))
-                .foregroundColor(.primary)
         }
     }
 
@@ -556,7 +525,7 @@ struct DashboardView: View {
                                 if device.battery != "N/A" {
                                     HStack(spacing: 4) {
                                         Image(systemName: batteryIconForLevel(device.battery))
-                                            .font(.system(size: 10))
+                                            .font(.system(size: 11))
                                             .foregroundColor(batteryColorForLevel(device.battery))
                                         Text(device.battery)
                                             .font(.dodoCaptionSmall)

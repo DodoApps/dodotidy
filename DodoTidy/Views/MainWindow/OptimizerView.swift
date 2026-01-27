@@ -295,7 +295,7 @@ struct OptimizationTaskCard: View {
 
                 HStack(spacing: 4) {
                     Image(systemName: "sparkles")
-                        .font(.system(size: 10))
+                        .font(.system(size: 11))
 
                     Text(task.benefit)
                         .font(.dodoCaptionSmall)

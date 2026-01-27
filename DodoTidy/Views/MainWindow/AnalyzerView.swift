@@ -71,7 +71,7 @@ struct AnalyzerView: View {
                     Image(systemName: "folder")
                     Text("Location")
                     Image(systemName: "chevron.down")
-                        .font(.system(size: 10))
+                        .font(.system(size: 11))
                 }
             }
             .buttonStyle(.dodoSecondary)

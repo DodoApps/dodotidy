@@ -127,7 +127,7 @@ struct MenuBarView: View {
                             .monospacedDigit()
 
                         Text(battery.status == "Charging" ? "Charging" : battery.timeLeft)
-                            .font(.system(size: 9))
+                            .font(.system(size: 11))
                             .foregroundColor(.dodoTextTertiary)
                     }
                 }
@@ -149,7 +149,7 @@ struct MenuBarView: View {
                             .monospacedDigit()
 
                         Text("CPU")
-                            .font(.system(size: 9))
+                            .font(.system(size: 11))
                             .foregroundColor(.dodoTextTertiary)
                     }
                 }
@@ -167,7 +167,7 @@ struct MenuBarView: View {
                     VStack(alignment: .leading, spacing: 1) {
                         HStack(spacing: 2) {
                             Image(systemName: "arrow.down")
-                                .font(.system(size: 8))
+                                .font(.system(size: 10))
                             Text(String(format: "%.1f", activeNetwork.rxRateMBs))
                                 .font(.dodoCaptionSmall)
                                 .monospacedDigit()
@@ -176,9 +176,9 @@ struct MenuBarView: View {
 
                         HStack(spacing: 2) {
                             Image(systemName: "arrow.up")
-                                .font(.system(size: 8))
+                                .font(.system(size: 10))
                             Text(String(format: "%.1f", activeNetwork.txRateMBs))
-                                .font(.system(size: 9))
+                                .font(.system(size: 11))
                                 .monospacedDigit()
                         }
                         .foregroundColor(.dodoTextTertiary)

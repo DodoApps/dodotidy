@@ -97,7 +97,7 @@ extension Font {
     static let dodoSubheadline = Font.system(size: 14, weight: .medium)
     static let dodoBody = Font.system(size: 14, weight: .regular)
     static let dodoCaption = Font.system(size: 12, weight: .regular)
-    static let dodoCaptionSmall = Font.system(size: 10, weight: .regular)
+    static let dodoCaptionSmall = Font.system(size: 11, weight: .regular)
 }
 
 // MARK: - View Modifiers
