@@ -110,15 +110,6 @@ DodoTidy peut détecter les données résiduelles d'applications que vous avez d
 
 ## Installation
 
-### Homebrew (Recommandé)
-
-```bash
-brew tap bluewave-labs/dodotidy
-brew install --cask dodotidy
-```
-
-### Installation manuelle
-
 1. Téléchargez le dernier DMG depuis [Releases](https://github.com/bluewave-labs/DodoTidy/releases)
 2. Ouvrez le DMG et faites glisser DodoTidy vers Applications
 3. Faites un clic droit et sélectionnez "Ouvrir" lors du premier lancement (requis pour les applications non signées)

@@ -110,15 +110,6 @@ DodoTidy, kaldırdığınız uygulamalardan kalan verileri tespit edebilir:
 
 ## Kurulum
 
-### Homebrew (Önerilen)
-
-```bash
-brew tap bluewave-labs/dodotidy
-brew install --cask dodotidy
-```
-
-### Manuel Kurulum
-
 1. [Releases](https://github.com/bluewave-labs/DodoTidy/releases) sayfasından en son DMG dosyasını indirin
 2. DMG dosyasını açın ve DodoTidy'yi Uygulamalar klasörüne sürükleyin
 3. İlk açılışta sağ tıklayıp "Aç" seçeneğini seçin (imzasız uygulamalar için gerekli)
