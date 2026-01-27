@@ -25,6 +25,10 @@ targets:
     sources:
       - path: DodoTidy
       - path: DodoTidy/Resources/Assets.xcassets
+      - path: DodoTidy/Resources/en.lproj
+      - path: DodoTidy/Resources/tr.lproj
+      - path: DodoTidy/Resources/de.lproj
+      - path: DodoTidy/Resources/fr.lproj
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.dodotidy.app

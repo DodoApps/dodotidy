@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0684E51DEA8BEC5DA664CF0A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B3351D85D21CDB00581DE75C /* Localizable.strings */; };
 		2B73214A2C75208423928D25 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED324FFAF7332F818F85022F /* AppDelegate.swift */; };
 		2DFDE5BC9E256582B10789DD /* StatusItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678DD44720EF6858921B3F6E /* StatusItemManager.swift */; };
 		38AE7F1A13B6DD74B1DECDE9 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3208A23D8228A0ED66F63B55 /* SidebarView.swift */; };
@@ -31,13 +32,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		06AF22E43E5ECB8B36120349 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		19E0F27389EF29DCFE84CE7A /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		312BB51168B15EC8C0E8D7F0 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		3208A23D8228A0ED66F63B55 /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		4446328661A1E58112F680F6 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		4CF76959838BDEBD8E797691 /* AnalyzerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyzerView.swift; sourceTree = "<group>"; };
+		547948EA0997BFF97717D3A3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		678DD44720EF6858921B3F6E /* StatusItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemManager.swift; sourceTree = "<group>"; };
+		6E75EA352102EAB4FEBF650B /* fr.lproj */ = {isa = PBXFileReference; path = fr.lproj; sourceTree = "<group>"; };
 		77B3C6CFD1C3627A78BF364F /* OptimizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptimizerView.swift; sourceTree = "<group>"; };
 		7AE2E6586DABD00299462B21 /* ProcessRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
+		8AFF73ED66D2BE0FD2CB8EDC /* tr.lproj */ = {isa = PBXFileReference; path = tr.lproj; sourceTree = "<group>"; };
+		8B495D0F0B208D0DB161A9F9 /* en.lproj */ = {isa = PBXFileReference; path = en.lproj; sourceTree = "<group>"; };
 		9C2588DDEA11C20BBD6FB72F /* ScanResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResult.swift; sourceTree = "<group>"; };
 		A18402E09CC8F6AB6B5F4F6C /* SunburstChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunburstChart.swift; sourceTree = "<group>"; };
 		A66E437ABDA62EEBF0CA42A7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -47,12 +54,14 @@
 		B668439CD23322980411E856 /* DodoTidyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DodoTidyService.swift; sourceTree = "<group>"; };
 		BA7A49AC15FB207C550286BE /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		BF6B1DCD1062828D9FA336EB /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		D616498FA7311F2FAC50D3A2 /* de.lproj */ = {isa = PBXFileReference; path = de.lproj; sourceTree = "<group>"; };
 		D973DA9DB98CEEAEC265D7A9 /* ScheduledTasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledTasksView.swift; sourceTree = "<group>"; };
 		DC0B48CCD1E9B0A2B5019245 /* SystemMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMetrics.swift; sourceTree = "<group>"; };
 		ED324FFAF7332F818F85022F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EEF40F686C314510C1C4F632 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		EF41CB83AE5CDD4C0E4DD97C /* DodoTidy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DodoTidy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F221F71F744C6002E7A79733 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		F2580987041A7FB67409BFD8 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -60,6 +69,11 @@
 			isa = PBXGroup;
 			children = (
 				A66E437ABDA62EEBF0CA42A7 /* Assets.xcassets */,
+				D616498FA7311F2FAC50D3A2 /* de.lproj */,
+				8B495D0F0B208D0DB161A9F9 /* en.lproj */,
+				6E75EA352102EAB4FEBF650B /* fr.lproj */,
+				B3351D85D21CDB00581DE75C /* Localizable.strings */,
+				8AFF73ED66D2BE0FD2CB8EDC /* tr.lproj */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -214,7 +228,10 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				de,
 				en,
+				fr,
+				tr,
 			);
 			mainGroup = 6D96EADF71AFD991AEA5F574;
 			minimizedProjectReferenceProxies = 1;
@@ -233,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5C7687C2AC78C871C25493E4 /* Assets.xcassets in Resources */,
+				0684E51DEA8BEC5DA664CF0A /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +285,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B3351D85D21CDB00581DE75C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F2580987041A7FB67409BFD8 /* de */,
+				547948EA0997BFF97717D3A3 /* en */,
+				4446328661A1E58112F680F6 /* fr */,
+				06AF22E43E5ECB8B36120349 /* tr */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		29275EDBB146C1B4E86DA5F5 /* Release */ = {

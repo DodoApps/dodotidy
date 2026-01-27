@@ -91,6 +91,16 @@ extension String {
         }
         return String(self.prefix(length - 3)) + "..."
     }
+
+    /// Localized string from Localizable.strings
+    var localized: String {
+        NSLocalizedString(self, comment: "")
+    }
+
+    /// Localized string with format arguments
+    func localized(_ args: CVarArg...) -> String {
+        String(format: NSLocalizedString(self, comment: ""), arguments: args)
+    }
 }
 
 // MARK: - Helper Functions

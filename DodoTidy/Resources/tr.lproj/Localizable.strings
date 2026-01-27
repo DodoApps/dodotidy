@@ -1,0 +1,224 @@
+/* Navigation */
+"nav.dashboard" = "Kontrol Paneli";
+"nav.cleaner" = "Temizleyici";
+"nav.analyzer" = "Analizci";
+"nav.optimizer" = "Optimize Edici";
+"nav.apps" = "Uygulamalar";
+"nav.history" = "Geçmiş";
+"nav.scheduled" = "Zamanlanmış";
+"nav.settings" = "Ayarlar";
+
+/* Dashboard */
+"dashboard.title" = "Kontrol Paneli";
+"dashboard.cpu" = "CPU";
+"dashboard.memory" = "Bellek";
+"dashboard.disk" = "Disk";
+"dashboard.battery" = "Pil";
+"dashboard.thermal" = "Termal";
+"dashboard.system" = "Sistem";
+"dashboard.uptime" = "Çalışma Süresi";
+"dashboard.cores" = "%d çekirdek";
+"dashboard.bluetooth" = "Bluetooth cihazları";
+"dashboard.connected" = "%d bağlı";
+"dashboard.quickActions" = "Hızlı işlemler";
+"dashboard.smartClean" = "Akıllı temizlik";
+"dashboard.freeUpSpace" = "Alan aç";
+"dashboard.optimize" = "Optimize et";
+"dashboard.improvePerformance" = "Performansı artır";
+"dashboard.analyzeDisk" = "Diski analiz et";
+"dashboard.viewStorageUsage" = "Depolama kullanımını görüntüle";
+"dashboard.systemInfo" = "Sistem bilgisi";
+"dashboard.model" = "Model";
+"dashboard.processor" = "İşlemci";
+"dashboard.storage" = "Depolama";
+"dashboard.hostname" = "Bilgisayar adı";
+"dashboard.runningCool" = "Serin çalışıyor";
+"dashboard.normalTemp" = "Normal çalışma sıcaklığı";
+"dashboard.runningWarm" = "Ilık çalışıyor";
+"dashboard.runningHot" = "Sıcak çalışıyor - iş yükünü azaltmayı düşünün";
+"dashboard.health.excellent" = "Mükemmel";
+"dashboard.health.good" = "İyi";
+"dashboard.health.fair" = "Orta";
+"dashboard.health.needsAttention" = "İlgi gerektiriyor";
+"dashboard.health.critical" = "Kritik";
+
+/* Cleaner */
+"cleaner.title" = "Sistem temizleyici";
+"cleaner.subtitle" = "Disk alanı açmak için gereksiz dosyaları kaldırın";
+"cleaner.rescan" = "Yeniden tara";
+"cleaner.scanning" = "Temizlenebilir öğeler taranıyor...";
+"cleaner.systemClean" = "Sisteminiz temiz";
+"cleaner.noUnnecessary" = "Gereksiz dosya bulunamadı";
+"cleaner.scanAgain" = "Tekrar tara";
+"cleaner.totalSelected" = "Toplam seçili";
+"cleaner.items" = "%d öğe";
+"cleaner.movedToTrash" = "Öğeler Çöp Kutusuna taşınır";
+"cleaner.cleanSelected" = "Seçilenleri temizle";
+"cleaner.cleaning" = "Temizleniyor...";
+"cleaner.loading" = "Yükleniyor...";
+"cleaner.confirmTitle" = "Temizlemeyi onayla";
+"cleaner.confirmMessage" = "%d öğeyi (%@) Çöp Kutusuna taşımak istediğinizden emin misiniz?\n\nBu işlem, öğeleri Çöp Kutusundan geri yükleyerek geri alınabilir.";
+"cleaner.completeTitle" = "Temizleme tamamlandı";
+"cleaner.completeMessage" = "%@ disk alanı başarıyla boşaltıldı.\n\nÖğeler Çöp Kutusuna taşındı.";
+"cleaner.cancel" = "İptal";
+"cleaner.moveToTrash" = "Çöp Kutusuna Taşı";
+"cleaner.ok" = "Tamam";
+"cleaner.files" = "%@ dosya";
+"cleaner.searchItems" = "Öğeleri ara...";
+"cleaner.anySize" = "Herhangi boyut";
+"cleaner.categories" = "Kategoriler";
+"cleaner.allCategories" = "Tüm kategoriler";
+"cleaner.selected" = "%d seçili";
+"cleaner.selectAll" = "Tümünü seç";
+"cleaner.deselectAll" = "Seçimi kaldır";
+"cleaner.clearFilters" = "Filtreleri temizle";
+"cleaner.showingItems" = "%d kategori içinde %d öğe gösteriliyor";
+"cleaner.noItemsMatch" = "Filtrelerinize uyan öğe yok";
+
+/* File Preview */
+"preview.title" = "Silinecek dosyaları incele";
+"preview.subtitle" = "Aşağıdaki dosyalar Çöp Kutusuna taşınacak";
+"preview.totalToRemove" = "Kaldırılacak toplam";
+"preview.path" = "Yol:";
+"preview.sampleFiles" = "Örnek dosyalar (%@'den %d'e kadar gösteriliyor):";
+"preview.loadingPreview" = "Dosya önizlemesi yükleniyor...";
+
+/* Analyzer */
+"analyzer.title" = "Disk analizci";
+"analyzer.location" = "Konum";
+"analyzer.scan" = "Tara";
+"analyzer.scanning" = "%@ taranıyor...";
+"analyzer.analyzeUsage" = "Disk kullanımınızı analiz edin";
+"analyzer.selectLocation" = "Disk alanınızı neyin kullandığını görmek için bir konum seçin ve Tara'ya tıklayın";
+"analyzer.scanHome" = "Ana klasörü tara";
+"analyzer.totalSize" = "Toplam boyut";
+"analyzer.filesScanned" = "Taranan dosyalar";
+"analyzer.directories" = "Dizinler";
+"analyzer.largeFiles" = "Büyük dosyalar";
+"analyzer.home" = "Ana Klasör";
+"analyzer.desktop" = "Masaüstü";
+"analyzer.documents" = "Belgeler";
+"analyzer.downloads" = "İndirilenler";
+"analyzer.applications" = "Uygulamalar";
+"analyzer.chooseFolder" = "Klasör seç...";
+
+/* Optimizer */
+"optimizer.title" = "Optimize Edici";
+"optimizer.reanalyze" = "Yeniden analiz et";
+"optimizer.runAll" = "Tümünü çalıştır";
+"optimizer.analyzing" = "Sistem analiz ediliyor...";
+"optimizer.analysisFailed" = "Analiz başarısız";
+"optimizer.tryAgain" = "Tekrar dene";
+"optimizer.systemOptimized" = "Sistem optimize edilmiş";
+"optimizer.noTasksNeeded" = "Optimizasyon görevi gerekli değil";
+"optimizer.checkAgain" = "Tekrar kontrol et";
+"optimizer.pending" = "%d bekliyor";
+"optimizer.completed" = "%d tamamlandı";
+"optimizer.failed" = "%d başarısız";
+"optimizer.retryFailed" = "Başarısızları yeniden dene";
+"optimizer.run" = "Çalıştır";
+"optimizer.running" = "Çalışıyor...";
+"optimizer.done" = "Tamamlandı";
+"optimizer.retry" = "Yeniden dene";
+"optimizer.confirmTitle" = "Optimizasyonu onayla";
+"optimizer.confirmMessage" = "\"%@\" görevini çalıştırmak istediğinizden emin misiniz?\n\n%@\n\nBu işlem bir sistem komutu çalıştıracak.";
+"optimizer.confirmAllTitle" = "Tüm optimizasyonlar çalıştırılsın mı?";
+"optimizer.confirmAllMessage" = "Bu, %d optimizasyon görevi çalıştıracak:\n\n%@\n\nDevam etmek istediğinizden emin misiniz?";
+
+/* Optimizer Tasks */
+"task.clearDns" = "DNS önbelleğini temizle";
+"task.clearDns.desc" = "Ağ sorunlarını çözmek ve aramaları hızlandırmak için DNS önbelleğini temizle";
+"task.clearDns.benefit" = "İyileştirilmiş ağ performansı";
+"task.clearQuickLook" = "Quick Look önbelleğini temizle";
+"task.clearQuickLook.desc" = "Önizleme sorunlarını düzeltmek için Quick Look küçük resim önbelleğini kaldır";
+"task.clearQuickLook.benefit" = "Daha iyi dosya önizlemeleri";
+"task.resetLaunchServices" = "Launch Services'ı sıfırla";
+"task.resetLaunchServices.desc" = "Uygulama ilişkilendirmelerini düzeltmek için Launch Services veritabanını yeniden oluştur";
+"task.resetLaunchServices.benefit" = "Doğru dosya ilişkilendirmeleri";
+"task.rebuildFontCache" = "Yazı tipi önbelleğini yeniden oluştur";
+"task.rebuildFontCache.desc" = "Görüntü sorunlarını düzeltmek için bozuk yazı tipi önbelleğini temizle";
+"task.rebuildFontCache.benefit" = "Düzeltilmiş yazı tipi oluşturma";
+"task.refreshDock" = "Dock'u yenile";
+"task.refreshDock.desc" = "Görüntü sorunlarını düzeltmek için Dock önbelleğini temizle ve yeniden başlat";
+"task.refreshDock.benefit" = "Düzeltilmiş Dock görünümü";
+"task.refreshFinder" = "Finder'ı yenile";
+"task.refreshFinder.desc" = "Dosya tarayıcısı sorunlarını düzeltmek için Finder'ı yeniden başlat";
+"task.refreshFinder.benefit" = "Düzeltilmiş dosya tarama";
+"task.clearMemory" = "Bellek önbelleğini temizle";
+"task.clearMemory.desc" = "Bellek baskısını azaltmak için etkin olmayan belleği temizle";
+"task.clearMemory.benefit" = "Azaltılmış bellek baskısı";
+"task.flushArp" = "ARP önbelleğini temizle";
+"task.flushArp.desc" = "Ağ keşif sorunlarını düzeltmek için ARP önbelleğini temizle";
+"task.flushArp.benefit" = "Daha iyi ağ keşfi";
+
+/* Categories */
+"category.userCaches" = "Kullanıcı önbellekleri";
+"category.appCaches" = "Uygulama önbellekleri";
+"category.downloads" = "İndirilenler";
+"category.trash" = "Çöp Kutusu";
+"category.systemLogs" = "Sistem günlükleri";
+"category.devTools" = "Geliştirici araçları";
+
+/* Warnings */
+"warning.downloads" = "⚠️ İndirilenler henüz işlemediğiniz önemli dosyalar içerebilir";
+"warning.trash" = "⚠️ Çöp Kutusunu boşaltmak GERİ ALINAMAZ - dosyalar kurtarılamaz";
+"warning.logs" = "⚠️ Günlükler son sorunların giderilmesi için gerekli olabilir";
+"warning.devCache" = "⚠️ Geliştirici önbellekleri yeniden oluşturmak için uzun indirmeler gerektirebilir";
+
+/* History */
+"history.title" = "Geçmiş";
+"history.noOperations" = "Henüz işlem yok";
+"history.operationsAppear" = "Temizleme ve optimizasyon işlemleriniz burada görünecek";
+"history.clearHistory" = "Geçmişi temizle";
+"history.clearConfirm" = "Tüm geçmişi temizlemek istediğinizden emin misiniz?";
+"history.clear" = "Temizle";
+
+/* Scheduled Tasks */
+"scheduled.title" = "Zamanlanmış görevler";
+"scheduled.noTasks" = "Zamanlanmış görev yok";
+"scheduled.createFirst" = "İlk zamanlanmış temizlik görevinizi oluşturun";
+"scheduled.newTask" = "Yeni görev";
+"scheduled.enabled" = "Etkin";
+"scheduled.disabled" = "Devre dışı";
+"scheduled.lastRun" = "Son çalışma:";
+"scheduled.never" = "Hiç";
+"scheduled.nextRun" = "Sonraki çalışma:";
+
+/* Settings */
+"settings.title" = "Ayarlar";
+"settings.general" = "Genel";
+"settings.cleaning" = "Temizleme";
+"settings.notifications" = "Bildirimler";
+"settings.launchAtLogin" = "Oturum açılışında başlat";
+"settings.showMenuBar" = "Menü çubuğu simgesini göster";
+"settings.refreshInterval" = "Yenileme aralığı";
+"settings.seconds" = "%d saniye";
+"settings.confirmCleaning" = "Temizlemeden önce onayla";
+"settings.dryRunMode" = "Kuru çalıştırma modu";
+"settings.dryRunDesc" = "Silmeden neyin silineceğini önizle";
+"settings.fileAgeFilter" = "Dosya yaşı filtresi";
+"settings.days" = "%d gün";
+"settings.disabled" = "Devre dışı";
+"settings.protectedPaths" = "Korumalı yollar";
+"settings.protectedDesc" = "Bu yollar asla temizlenmeyecek";
+"settings.addPath" = "Yol ekle";
+"settings.showNotifications" = "Bildirimleri göster";
+"settings.lowDiskAlert" = "Düşük disk alanı uyarısı";
+"settings.lowDiskThreshold" = "Boş alan şunun altına düştüğünde uyar";
+"settings.scheduledNotifications" = "Zamanlanmış görev bildirimleri";
+"settings.confirmScheduled" = "Zamanlanmış görevleri onayla";
+
+/* Common */
+"common.refresh" = "Yenile";
+"common.cancel" = "İptal";
+"common.ok" = "Tamam";
+"common.delete" = "Sil";
+"common.save" = "Kaydet";
+"common.edit" = "Düzenle";
+"common.add" = "Ekle";
+"common.remove" = "Kaldır";
+"common.close" = "Kapat";
+"common.error" = "Hata";
+"common.success" = "Başarılı";
+"common.warning" = "Uyarı";
+"common.somethingWrong" = "Bir şeyler yanlış gitti";

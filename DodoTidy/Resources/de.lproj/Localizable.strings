@@ -1,0 +1,224 @@
+/* Navigation */
+"nav.dashboard" = "Dashboard";
+"nav.cleaner" = "Bereiniger";
+"nav.analyzer" = "Analysator";
+"nav.optimizer" = "Optimierer";
+"nav.apps" = "Apps";
+"nav.history" = "Verlauf";
+"nav.scheduled" = "Geplant";
+"nav.settings" = "Einstellungen";
+
+/* Dashboard */
+"dashboard.title" = "Dashboard";
+"dashboard.cpu" = "CPU";
+"dashboard.memory" = "Arbeitsspeicher";
+"dashboard.disk" = "Festplatte";
+"dashboard.battery" = "Akku";
+"dashboard.thermal" = "Temperatur";
+"dashboard.system" = "System";
+"dashboard.uptime" = "Betriebszeit";
+"dashboard.cores" = "%d Kerne";
+"dashboard.bluetooth" = "Bluetooth-Geräte";
+"dashboard.connected" = "%d verbunden";
+"dashboard.quickActions" = "Schnellaktionen";
+"dashboard.smartClean" = "Intelligente Bereinigung";
+"dashboard.freeUpSpace" = "Speicher freigeben";
+"dashboard.optimize" = "Optimieren";
+"dashboard.improvePerformance" = "Leistung verbessern";
+"dashboard.analyzeDisk" = "Festplatte analysieren";
+"dashboard.viewStorageUsage" = "Speichernutzung anzeigen";
+"dashboard.systemInfo" = "Systeminformationen";
+"dashboard.model" = "Modell";
+"dashboard.processor" = "Prozessor";
+"dashboard.storage" = "Speicher";
+"dashboard.hostname" = "Hostname";
+"dashboard.runningCool" = "Läuft kühl";
+"dashboard.normalTemp" = "Normale Betriebstemperatur";
+"dashboard.runningWarm" = "Läuft warm";
+"dashboard.runningHot" = "Läuft heiß - erwägen Sie die Arbeitslast zu reduzieren";
+"dashboard.health.excellent" = "Ausgezeichnet";
+"dashboard.health.good" = "Gut";
+"dashboard.health.fair" = "Mittelmäßig";
+"dashboard.health.needsAttention" = "Erfordert Aufmerksamkeit";
+"dashboard.health.critical" = "Kritisch";
+
+/* Cleaner */
+"cleaner.title" = "Systembereiniger";
+"cleaner.subtitle" = "Entfernen Sie unnötige Dateien, um Speicherplatz freizugeben";
+"cleaner.rescan" = "Erneut scannen";
+"cleaner.scanning" = "Suche nach bereinigbaren Elementen...";
+"cleaner.systemClean" = "Ihr System ist sauber";
+"cleaner.noUnnecessary" = "Keine unnötigen Dateien gefunden";
+"cleaner.scanAgain" = "Erneut scannen";
+"cleaner.totalSelected" = "Gesamt ausgewählt";
+"cleaner.items" = "%d Elemente";
+"cleaner.movedToTrash" = "Elemente werden in den Papierkorb verschoben";
+"cleaner.cleanSelected" = "Ausgewählte bereinigen";
+"cleaner.cleaning" = "Wird bereinigt...";
+"cleaner.loading" = "Wird geladen...";
+"cleaner.confirmTitle" = "Bereinigung bestätigen";
+"cleaner.confirmMessage" = "Sind Sie sicher, dass Sie %d Elemente (%@) in den Papierkorb verschieben möchten?\n\nDiese Aktion kann durch Wiederherstellen der Elemente aus dem Papierkorb rückgängig gemacht werden.";
+"cleaner.completeTitle" = "Bereinigung abgeschlossen";
+"cleaner.completeMessage" = "%@ Speicherplatz erfolgreich freigegeben.\n\nElemente wurden in den Papierkorb verschoben.";
+"cleaner.cancel" = "Abbrechen";
+"cleaner.moveToTrash" = "In Papierkorb verschieben";
+"cleaner.ok" = "OK";
+"cleaner.files" = "%@ Dateien";
+"cleaner.searchItems" = "Elemente suchen...";
+"cleaner.anySize" = "Beliebige Größe";
+"cleaner.categories" = "Kategorien";
+"cleaner.allCategories" = "Alle Kategorien";
+"cleaner.selected" = "%d ausgewählt";
+"cleaner.selectAll" = "Alle auswählen";
+"cleaner.deselectAll" = "Auswahl aufheben";
+"cleaner.clearFilters" = "Filter löschen";
+"cleaner.showingItems" = "Zeige %d Elemente in %d Kategorien";
+"cleaner.noItemsMatch" = "Keine Elemente entsprechen Ihren Filtern";
+
+/* File Preview */
+"preview.title" = "Zu löschende Dateien überprüfen";
+"preview.subtitle" = "Die folgenden Dateien werden in den Papierkorb verschoben";
+"preview.totalToRemove" = "Gesamt zu entfernen";
+"preview.path" = "Pfad:";
+"preview.sampleFiles" = "Beispieldateien (zeige bis zu %d von %@):";
+"preview.loadingPreview" = "Dateivorschau wird geladen...";
+
+/* Analyzer */
+"analyzer.title" = "Festplattenanalysator";
+"analyzer.location" = "Speicherort";
+"analyzer.scan" = "Scannen";
+"analyzer.scanning" = "Scanne %@...";
+"analyzer.analyzeUsage" = "Analysieren Sie Ihre Festplattennutzung";
+"analyzer.selectLocation" = "Wählen Sie einen Speicherort und klicken Sie auf Scannen, um zu sehen, was Ihren Speicherplatz belegt";
+"analyzer.scanHome" = "Home-Ordner scannen";
+"analyzer.totalSize" = "Gesamtgröße";
+"analyzer.filesScanned" = "Gescannte Dateien";
+"analyzer.directories" = "Verzeichnisse";
+"analyzer.largeFiles" = "Große Dateien";
+"analyzer.home" = "Home";
+"analyzer.desktop" = "Schreibtisch";
+"analyzer.documents" = "Dokumente";
+"analyzer.downloads" = "Downloads";
+"analyzer.applications" = "Programme";
+"analyzer.chooseFolder" = "Ordner wählen...";
+
+/* Optimizer */
+"optimizer.title" = "Optimierer";
+"optimizer.reanalyze" = "Erneut analysieren";
+"optimizer.runAll" = "Alle ausführen";
+"optimizer.analyzing" = "Analysiere System...";
+"optimizer.analysisFailed" = "Analyse fehlgeschlagen";
+"optimizer.tryAgain" = "Erneut versuchen";
+"optimizer.systemOptimized" = "System ist optimiert";
+"optimizer.noTasksNeeded" = "Keine Optimierungsaufgaben erforderlich";
+"optimizer.checkAgain" = "Erneut prüfen";
+"optimizer.pending" = "%d ausstehend";
+"optimizer.completed" = "%d abgeschlossen";
+"optimizer.failed" = "%d fehlgeschlagen";
+"optimizer.retryFailed" = "Fehlgeschlagene wiederholen";
+"optimizer.run" = "Ausführen";
+"optimizer.running" = "Wird ausgeführt...";
+"optimizer.done" = "Fertig";
+"optimizer.retry" = "Wiederholen";
+"optimizer.confirmTitle" = "Optimierung bestätigen";
+"optimizer.confirmMessage" = "Sind Sie sicher, dass Sie \"%@\" ausführen möchten?\n\n%@\n\nDiese Aktion führt einen Systembefehl aus.";
+"optimizer.confirmAllTitle" = "Alle Optimierungen ausführen?";
+"optimizer.confirmAllMessage" = "Dies wird %d Optimierungsaufgaben ausführen:\n\n%@\n\nSind Sie sicher, dass Sie fortfahren möchten?";
+
+/* Optimizer Tasks */
+"task.clearDns" = "DNS-Cache leeren";
+"task.clearDns.desc" = "DNS-Cache leeren, um Netzwerkprobleme zu beheben und Abfragen zu beschleunigen";
+"task.clearDns.benefit" = "Verbesserte Netzwerkleistung";
+"task.clearQuickLook" = "Quick Look-Cache leeren";
+"task.clearQuickLook.desc" = "Quick Look-Miniaturansichten-Cache entfernen, um Vorschauprobleme zu beheben";
+"task.clearQuickLook.benefit" = "Bessere Dateivorschauen";
+"task.resetLaunchServices" = "Launch Services zurücksetzen";
+"task.resetLaunchServices.desc" = "Launch Services-Datenbank neu erstellen, um App-Zuordnungen zu reparieren";
+"task.resetLaunchServices.benefit" = "Korrekte Dateizuordnungen";
+"task.rebuildFontCache" = "Schriftarten-Cache neu erstellen";
+"task.rebuildFontCache.desc" = "Beschädigten Schriftarten-Cache löschen, um Anzeigeprobleme zu beheben";
+"task.rebuildFontCache.benefit" = "Korrigierte Schriftartendarstellung";
+"task.refreshDock" = "Dock aktualisieren";
+"task.refreshDock.desc" = "Dock-Cache löschen und neu starten, um Anzeigeprobleme zu beheben";
+"task.refreshDock.benefit" = "Korrigierte Dock-Darstellung";
+"task.refreshFinder" = "Finder aktualisieren";
+"task.refreshFinder.desc" = "Finder neu starten, um Dateibrowser-Probleme zu beheben";
+"task.refreshFinder.benefit" = "Korrigiertes Dateibrowsing";
+"task.clearMemory" = "Arbeitsspeicher-Cache leeren";
+"task.clearMemory.desc" = "Inaktiven Speicher freigeben, um Speicherdruck zu reduzieren";
+"task.clearMemory.benefit" = "Reduzierter Speicherdruck";
+"task.flushArp" = "ARP-Cache leeren";
+"task.flushArp.desc" = "ARP-Cache löschen, um Netzwerkerkennungsprobleme zu beheben";
+"task.flushArp.benefit" = "Bessere Netzwerkerkennung";
+
+/* Categories */
+"category.userCaches" = "Benutzer-Caches";
+"category.appCaches" = "Anwendungs-Caches";
+"category.downloads" = "Downloads";
+"category.trash" = "Papierkorb";
+"category.systemLogs" = "Systemprotokolle";
+"category.devTools" = "Entwicklerwerkzeuge";
+
+/* Warnings */
+"warning.downloads" = "⚠️ Downloads können wichtige Dateien enthalten, die Sie noch nicht verarbeitet haben";
+"warning.trash" = "⚠️ Das Leeren des Papierkorbs ist UNWIDERRUFLICH - Dateien können nicht wiederhergestellt werden";
+"warning.logs" = "⚠️ Protokolle können für die Fehlerbehebung aktueller Probleme benötigt werden";
+"warning.devCache" = "⚠️ Entwickler-Caches können lange Neudownloads zum Wiederherstellen erfordern";
+
+/* History */
+"history.title" = "Verlauf";
+"history.noOperations" = "Noch keine Vorgänge";
+"history.operationsAppear" = "Ihre Bereinigungs- und Optimierungsvorgänge werden hier angezeigt";
+"history.clearHistory" = "Verlauf löschen";
+"history.clearConfirm" = "Sind Sie sicher, dass Sie den gesamten Verlauf löschen möchten?";
+"history.clear" = "Löschen";
+
+/* Scheduled Tasks */
+"scheduled.title" = "Geplante Aufgaben";
+"scheduled.noTasks" = "Keine geplanten Aufgaben";
+"scheduled.createFirst" = "Erstellen Sie Ihre erste geplante Bereinigungsaufgabe";
+"scheduled.newTask" = "Neue Aufgabe";
+"scheduled.enabled" = "Aktiviert";
+"scheduled.disabled" = "Deaktiviert";
+"scheduled.lastRun" = "Letzte Ausführung:";
+"scheduled.never" = "Nie";
+"scheduled.nextRun" = "Nächste Ausführung:";
+
+/* Settings */
+"settings.title" = "Einstellungen";
+"settings.general" = "Allgemein";
+"settings.cleaning" = "Bereinigung";
+"settings.notifications" = "Benachrichtigungen";
+"settings.launchAtLogin" = "Bei Anmeldung starten";
+"settings.showMenuBar" = "Menüleistensymbol anzeigen";
+"settings.refreshInterval" = "Aktualisierungsintervall";
+"settings.seconds" = "%d Sekunden";
+"settings.confirmCleaning" = "Vor Bereinigung bestätigen";
+"settings.dryRunMode" = "Probelauf-Modus";
+"settings.dryRunDesc" = "Vorschau dessen, was gelöscht würde, ohne tatsächlich zu löschen";
+"settings.fileAgeFilter" = "Dateialter-Filter";
+"settings.days" = "%d Tage";
+"settings.disabled" = "Deaktiviert";
+"settings.protectedPaths" = "Geschützte Pfade";
+"settings.protectedDesc" = "Diese Pfade werden niemals bereinigt";
+"settings.addPath" = "Pfad hinzufügen";
+"settings.showNotifications" = "Benachrichtigungen anzeigen";
+"settings.lowDiskAlert" = "Warnung bei wenig Speicherplatz";
+"settings.lowDiskThreshold" = "Warnen, wenn freier Speicherplatz unter";
+"settings.scheduledNotifications" = "Benachrichtigungen für geplante Aufgaben";
+"settings.confirmScheduled" = "Geplante Aufgaben bestätigen";
+
+/* Common */
+"common.refresh" = "Aktualisieren";
+"common.cancel" = "Abbrechen";
+"common.ok" = "OK";
+"common.delete" = "Löschen";
+"common.save" = "Speichern";
+"common.edit" = "Bearbeiten";
+"common.add" = "Hinzufügen";
+"common.remove" = "Entfernen";
+"common.close" = "Schließen";
+"common.error" = "Fehler";
+"common.success" = "Erfolg";
+"common.warning" = "Warnung";
+"common.somethingWrong" = "Etwas ist schiefgelaufen";

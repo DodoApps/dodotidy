@@ -1,0 +1,224 @@
+/* Navigation */
+"nav.dashboard" = "Tableau de bord";
+"nav.cleaner" = "Nettoyeur";
+"nav.analyzer" = "Analyseur";
+"nav.optimizer" = "Optimiseur";
+"nav.apps" = "Applications";
+"nav.history" = "Historique";
+"nav.scheduled" = "Planifié";
+"nav.settings" = "Réglages";
+
+/* Dashboard */
+"dashboard.title" = "Tableau de bord";
+"dashboard.cpu" = "CPU";
+"dashboard.memory" = "Mémoire";
+"dashboard.disk" = "Disque";
+"dashboard.battery" = "Batterie";
+"dashboard.thermal" = "Thermique";
+"dashboard.system" = "Système";
+"dashboard.uptime" = "Temps de fonctionnement";
+"dashboard.cores" = "%d cœurs";
+"dashboard.bluetooth" = "Appareils Bluetooth";
+"dashboard.connected" = "%d connectés";
+"dashboard.quickActions" = "Actions rapides";
+"dashboard.smartClean" = "Nettoyage intelligent";
+"dashboard.freeUpSpace" = "Libérer de l'espace";
+"dashboard.optimize" = "Optimiser";
+"dashboard.improvePerformance" = "Améliorer les performances";
+"dashboard.analyzeDisk" = "Analyser le disque";
+"dashboard.viewStorageUsage" = "Voir l'utilisation du stockage";
+"dashboard.systemInfo" = "Informations système";
+"dashboard.model" = "Modèle";
+"dashboard.processor" = "Processeur";
+"dashboard.storage" = "Stockage";
+"dashboard.hostname" = "Nom d'hôte";
+"dashboard.runningCool" = "Fonctionne à froid";
+"dashboard.normalTemp" = "Température de fonctionnement normale";
+"dashboard.runningWarm" = "Fonctionne à chaud";
+"dashboard.runningHot" = "Surchauffe - envisagez de réduire la charge de travail";
+"dashboard.health.excellent" = "Excellent";
+"dashboard.health.good" = "Bon";
+"dashboard.health.fair" = "Moyen";
+"dashboard.health.needsAttention" = "Nécessite attention";
+"dashboard.health.critical" = "Critique";
+
+/* Cleaner */
+"cleaner.title" = "Nettoyeur système";
+"cleaner.subtitle" = "Supprimez les fichiers inutiles pour libérer de l'espace disque";
+"cleaner.rescan" = "Rescanner";
+"cleaner.scanning" = "Recherche d'éléments à nettoyer...";
+"cleaner.systemClean" = "Votre système est propre";
+"cleaner.noUnnecessary" = "Aucun fichier inutile trouvé";
+"cleaner.scanAgain" = "Scanner à nouveau";
+"cleaner.totalSelected" = "Total sélectionné";
+"cleaner.items" = "%d éléments";
+"cleaner.movedToTrash" = "Les éléments sont déplacés vers la Corbeille";
+"cleaner.cleanSelected" = "Nettoyer la sélection";
+"cleaner.cleaning" = "Nettoyage en cours...";
+"cleaner.loading" = "Chargement...";
+"cleaner.confirmTitle" = "Confirmer le nettoyage";
+"cleaner.confirmMessage" = "Êtes-vous sûr de vouloir déplacer %d éléments (%@) vers la Corbeille ?\n\nCette action peut être annulée en restaurant les éléments depuis la Corbeille.";
+"cleaner.completeTitle" = "Nettoyage terminé";
+"cleaner.completeMessage" = "%@ d'espace disque libéré avec succès.\n\nLes éléments ont été déplacés vers la Corbeille.";
+"cleaner.cancel" = "Annuler";
+"cleaner.moveToTrash" = "Placer dans la Corbeille";
+"cleaner.ok" = "OK";
+"cleaner.files" = "%@ fichiers";
+"cleaner.searchItems" = "Rechercher des éléments...";
+"cleaner.anySize" = "Toute taille";
+"cleaner.categories" = "Catégories";
+"cleaner.allCategories" = "Toutes les catégories";
+"cleaner.selected" = "%d sélectionnés";
+"cleaner.selectAll" = "Tout sélectionner";
+"cleaner.deselectAll" = "Tout désélectionner";
+"cleaner.clearFilters" = "Effacer les filtres";
+"cleaner.showingItems" = "Affichage de %d éléments dans %d catégories";
+"cleaner.noItemsMatch" = "Aucun élément ne correspond à vos filtres";
+
+/* File Preview */
+"preview.title" = "Examiner les fichiers à supprimer";
+"preview.subtitle" = "Les fichiers suivants seront déplacés vers la Corbeille";
+"preview.totalToRemove" = "Total à supprimer";
+"preview.path" = "Chemin :";
+"preview.sampleFiles" = "Fichiers exemples (affichage jusqu'à %d sur %@) :";
+"preview.loadingPreview" = "Chargement de l'aperçu des fichiers...";
+
+/* Analyzer */
+"analyzer.title" = "Analyseur de disque";
+"analyzer.location" = "Emplacement";
+"analyzer.scan" = "Scanner";
+"analyzer.scanning" = "Analyse de %@...";
+"analyzer.analyzeUsage" = "Analysez l'utilisation de votre disque";
+"analyzer.selectLocation" = "Sélectionnez un emplacement et cliquez sur Scanner pour voir ce qui occupe votre espace disque";
+"analyzer.scanHome" = "Scanner le dossier personnel";
+"analyzer.totalSize" = "Taille totale";
+"analyzer.filesScanned" = "Fichiers analysés";
+"analyzer.directories" = "Répertoires";
+"analyzer.largeFiles" = "Gros fichiers";
+"analyzer.home" = "Accueil";
+"analyzer.desktop" = "Bureau";
+"analyzer.documents" = "Documents";
+"analyzer.downloads" = "Téléchargements";
+"analyzer.applications" = "Applications";
+"analyzer.chooseFolder" = "Choisir un dossier...";
+
+/* Optimizer */
+"optimizer.title" = "Optimiseur";
+"optimizer.reanalyze" = "Réanalyser";
+"optimizer.runAll" = "Tout exécuter";
+"optimizer.analyzing" = "Analyse du système...";
+"optimizer.analysisFailed" = "L'analyse a échoué";
+"optimizer.tryAgain" = "Réessayer";
+"optimizer.systemOptimized" = "Le système est optimisé";
+"optimizer.noTasksNeeded" = "Aucune tâche d'optimisation nécessaire";
+"optimizer.checkAgain" = "Vérifier à nouveau";
+"optimizer.pending" = "%d en attente";
+"optimizer.completed" = "%d terminées";
+"optimizer.failed" = "%d échouées";
+"optimizer.retryFailed" = "Réessayer les échecs";
+"optimizer.run" = "Exécuter";
+"optimizer.running" = "En cours...";
+"optimizer.done" = "Terminé";
+"optimizer.retry" = "Réessayer";
+"optimizer.confirmTitle" = "Confirmer l'optimisation";
+"optimizer.confirmMessage" = "Êtes-vous sûr de vouloir exécuter \"%@\" ?\n\n%@\n\nCette action exécutera une commande système.";
+"optimizer.confirmAllTitle" = "Exécuter toutes les optimisations ?";
+"optimizer.confirmAllMessage" = "Cela exécutera %d tâches d'optimisation :\n\n%@\n\nÊtes-vous sûr de vouloir continuer ?";
+
+/* Optimizer Tasks */
+"task.clearDns" = "Vider le cache DNS";
+"task.clearDns.desc" = "Vider le cache DNS pour résoudre les problèmes réseau et accélérer les recherches";
+"task.clearDns.benefit" = "Meilleures performances réseau";
+"task.clearQuickLook" = "Vider le cache Quick Look";
+"task.clearQuickLook.desc" = "Supprimer le cache des miniatures Quick Look pour corriger les problèmes d'aperçu";
+"task.clearQuickLook.benefit" = "Meilleurs aperçus de fichiers";
+"task.resetLaunchServices" = "Réinitialiser Launch Services";
+"task.resetLaunchServices.desc" = "Reconstruire la base de données Launch Services pour corriger les associations d'apps";
+"task.resetLaunchServices.benefit" = "Associations de fichiers correctes";
+"task.rebuildFontCache" = "Reconstruire le cache des polices";
+"task.rebuildFontCache.desc" = "Effacer le cache de polices corrompu pour corriger les problèmes d'affichage";
+"task.rebuildFontCache.benefit" = "Rendu des polices corrigé";
+"task.refreshDock" = "Actualiser le Dock";
+"task.refreshDock.desc" = "Vider le cache du Dock et redémarrer pour corriger les problèmes d'affichage";
+"task.refreshDock.benefit" = "Apparence du Dock corrigée";
+"task.refreshFinder" = "Actualiser le Finder";
+"task.refreshFinder.desc" = "Redémarrer le Finder pour corriger les problèmes de navigation";
+"task.refreshFinder.benefit" = "Navigation de fichiers corrigée";
+"task.clearMemory" = "Vider le cache mémoire";
+"task.clearMemory.desc" = "Purger la mémoire inactive pour réduire la pression mémoire";
+"task.clearMemory.benefit" = "Pression mémoire réduite";
+"task.flushArp" = "Vider le cache ARP";
+"task.flushArp.desc" = "Effacer le cache ARP pour corriger les problèmes de découverte réseau";
+"task.flushArp.benefit" = "Meilleure découverte réseau";
+
+/* Categories */
+"category.userCaches" = "Caches utilisateur";
+"category.appCaches" = "Caches d'applications";
+"category.downloads" = "Téléchargements";
+"category.trash" = "Corbeille";
+"category.systemLogs" = "Journaux système";
+"category.devTools" = "Outils de développement";
+
+/* Warnings */
+"warning.downloads" = "⚠️ Les téléchargements peuvent contenir des fichiers importants non traités";
+"warning.trash" = "⚠️ Vider la Corbeille est IRRÉVERSIBLE - les fichiers ne peuvent pas être récupérés";
+"warning.logs" = "⚠️ Les journaux peuvent être nécessaires pour résoudre des problèmes récents";
+"warning.devCache" = "⚠️ Les caches de développement peuvent nécessiter de longs re-téléchargements";
+
+/* History */
+"history.title" = "Historique";
+"history.noOperations" = "Pas encore d'opérations";
+"history.operationsAppear" = "Vos opérations de nettoyage et d'optimisation apparaîtront ici";
+"history.clearHistory" = "Effacer l'historique";
+"history.clearConfirm" = "Êtes-vous sûr de vouloir effacer tout l'historique ?";
+"history.clear" = "Effacer";
+
+/* Scheduled Tasks */
+"scheduled.title" = "Tâches planifiées";
+"scheduled.noTasks" = "Aucune tâche planifiée";
+"scheduled.createFirst" = "Créez votre première tâche de nettoyage planifiée";
+"scheduled.newTask" = "Nouvelle tâche";
+"scheduled.enabled" = "Activée";
+"scheduled.disabled" = "Désactivée";
+"scheduled.lastRun" = "Dernière exécution :";
+"scheduled.never" = "Jamais";
+"scheduled.nextRun" = "Prochaine exécution :";
+
+/* Settings */
+"settings.title" = "Réglages";
+"settings.general" = "Général";
+"settings.cleaning" = "Nettoyage";
+"settings.notifications" = "Notifications";
+"settings.launchAtLogin" = "Lancer à la connexion";
+"settings.showMenuBar" = "Afficher l'icône dans la barre des menus";
+"settings.refreshInterval" = "Intervalle de rafraîchissement";
+"settings.seconds" = "%d secondes";
+"settings.confirmCleaning" = "Confirmer avant le nettoyage";
+"settings.dryRunMode" = "Mode simulation";
+"settings.dryRunDesc" = "Prévisualiser ce qui serait supprimé sans réellement supprimer";
+"settings.fileAgeFilter" = "Filtre d'âge des fichiers";
+"settings.days" = "%d jours";
+"settings.disabled" = "Désactivé";
+"settings.protectedPaths" = "Chemins protégés";
+"settings.protectedDesc" = "Ces chemins ne seront jamais nettoyés";
+"settings.addPath" = "Ajouter un chemin";
+"settings.showNotifications" = "Afficher les notifications";
+"settings.lowDiskAlert" = "Alerte d'espace disque faible";
+"settings.lowDiskThreshold" = "Alerter quand l'espace libre est inférieur à";
+"settings.scheduledNotifications" = "Notifications des tâches planifiées";
+"settings.confirmScheduled" = "Confirmer les tâches planifiées";
+
+/* Common */
+"common.refresh" = "Rafraîchir";
+"common.cancel" = "Annuler";
+"common.ok" = "OK";
+"common.delete" = "Supprimer";
+"common.save" = "Enregistrer";
+"common.edit" = "Modifier";
+"common.add" = "Ajouter";
+"common.remove" = "Retirer";
+"common.close" = "Fermer";
+"common.error" = "Erreur";
+"common.success" = "Succès";
+"common.warning" = "Avertissement";
+"common.somethingWrong" = "Une erreur s'est produite";

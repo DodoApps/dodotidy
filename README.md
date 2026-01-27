@@ -1,5 +1,11 @@
 # DodoTidy - macOS System Cleaner, Analysis and Monitor
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![macOS](https://img.shields.io/badge/macOS-14.0+-blue.svg)](https://www.apple.com/macos/)
+[![Swift](https://img.shields.io/badge/Swift-5.9+-orange.svg)](https://swift.org/)
+
+🌍 **Translations:** [Türkçe](README.tr.md) | [Deutsch](README.de.md) | [Français](README.fr.md)
+
 A native macOS application for system monitoring, disk analysis, and cleanup. Built with SwiftUI for macOS 14+.
 
 <img width="1374" height="908" alt="image" src="https://github.com/user-attachments/assets/3d40f56a-cbb0-473d-bd96-1b6f6ebcb887" />
