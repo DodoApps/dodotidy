@@ -1,5 +1,9 @@
 # DodoTidy - macOS System Cleaner, Analysis and Monitor
 
+<p align="center">
+  <img src="dodotidy.png" alt="DodoTidy Logo" width="150">
+</p>
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![macOS](https://img.shields.io/badge/macOS-14.0+-blue.svg)](https://www.apple.com/macos/)
 [![Swift](https://img.shields.io/badge/Swift-5.9+-orange.svg)](https://swift.org/)

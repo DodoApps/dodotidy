@@ -1,5 +1,9 @@
 # DodoTidy - macOS Sistem Temizleyici
 
+<p align="center">
+  <img src="dodotidy.png" alt="DodoTidy Logo" width="150">
+</p>
+
 macOS için yerel bir sistem izleme, disk analizi ve temizleme uygulaması. SwiftUI ile macOS 14+ için geliştirilmiştir.
 
 ## Özellikler

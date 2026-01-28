@@ -1,5 +1,9 @@
 # DodoTidy - macOS Systembereiniger
 
+<p align="center">
+  <img src="dodotidy.png" alt="DodoTidy Logo" width="150">
+</p>
+
 Eine native macOS-Anwendung für Systemüberwachung, Festplattenanalyse und Bereinigung. Entwickelt mit SwiftUI für macOS 14+.
 
 ## Funktionen
