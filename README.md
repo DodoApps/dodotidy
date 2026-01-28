@@ -144,6 +144,7 @@ DodoTidy can detect leftover data from applications you've uninstalled:
 ```bash
 brew tap bluewave-labs/dodotidy
 brew install --cask dodotidy
+xattr -cr /Applications/DodoTidy.app
 ```
 
 ### Manual Installation

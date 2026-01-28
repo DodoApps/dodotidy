@@ -133,6 +133,7 @@ DodoTidy peut détecter les données résiduelles d'applications que vous avez d
 ```bash
 brew tap bluewave-labs/dodotidy
 brew install --cask dodotidy
+xattr -cr /Applications/DodoTidy.app
 ```
 
 ### Installation manuelle

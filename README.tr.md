@@ -133,6 +133,7 @@ DodoTidy, kaldırdığınız uygulamalardan kalan verileri tespit edebilir:
 ```bash
 brew tap bluewave-labs/dodotidy
 brew install --cask dodotidy
+xattr -cr /Applications/DodoTidy.app
 ```
 
 ### Manuel Kurulum

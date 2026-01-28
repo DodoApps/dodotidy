@@ -133,6 +133,7 @@ DodoTidy kann übriggebliebene Daten von Anwendungen erkennen, die Sie deinstall
 ```bash
 brew tap bluewave-labs/dodotidy
 brew install --cask dodotidy
+xattr -cr /Applications/DodoTidy.app
 ```
 
 ### Manuelle Installation
