@@ -17,9 +17,9 @@
 "dashboard.thermal" = "Termal";
 "dashboard.system" = "Sistem";
 "dashboard.uptime" = "Çalışma Süresi";
-"dashboard.cores" = "%d çekirdek";
+"dashboard.cores %lld" = "%lld çekirdek";
 "dashboard.bluetooth" = "Bluetooth cihazları";
-"dashboard.connected" = "%d bağlı";
+"dashboard.connected %lld" = "%lld bağlı";
 "dashboard.quickActions" = "Hızlı işlemler";
 "dashboard.smartClean" = "Akıllı temizlik";
 "dashboard.freeUpSpace" = "Alan aç";
@@ -113,7 +113,7 @@
 "optimizer.systemOptimized" = "Sistem optimize edilmiş";
 "optimizer.noTasksNeeded" = "Optimizasyon görevi gerekli değil";
 "optimizer.checkAgain" = "Tekrar kontrol et";
-"optimizer.pending" = "%d bekliyor";
+"optimizer.pending %lld" = "%lld bekliyor";
 "optimizer.completed" = "%d tamamlandı";
 "optimizer.failed" = "%d başarısız";
 "optimizer.retryFailed" = "Başarısızları yeniden dene";

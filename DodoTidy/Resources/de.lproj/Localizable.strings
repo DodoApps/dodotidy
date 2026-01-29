@@ -17,9 +17,9 @@
 "dashboard.thermal" = "Temperatur";
 "dashboard.system" = "System";
 "dashboard.uptime" = "Betriebszeit";
-"dashboard.cores" = "%d Kerne";
+"dashboard.cores %lld" = "%lld Kerne";
 "dashboard.bluetooth" = "Bluetooth-Geräte";
-"dashboard.connected" = "%d verbunden";
+"dashboard.connected %lld" = "%lld verbunden";
 "dashboard.quickActions" = "Schnellaktionen";
 "dashboard.smartClean" = "Intelligente Bereinigung";
 "dashboard.freeUpSpace" = "Speicher freigeben";
@@ -112,7 +112,7 @@
 "optimizer.systemOptimized" = "System ist optimiert";
 "optimizer.noTasksNeeded" = "Keine Optimierungsaufgaben erforderlich";
 "optimizer.checkAgain" = "Erneut prüfen";
-"optimizer.pending" = "%d ausstehend";
+"optimizer.pending %lld" = "%lld ausstehend";
 "optimizer.completed" = "%d abgeschlossen";
 "optimizer.failed" = "%d fehlgeschlagen";
 "optimizer.retryFailed" = "Fehlgeschlagene wiederholen";

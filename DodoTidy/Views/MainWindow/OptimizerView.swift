@@ -256,7 +256,7 @@ struct OptimizerView: View {
                         Circle()
                             .fill(Color.dodoInfo)
                             .frame(width: 8, height: 8)
-                        Text(String(localized: "optimizer.pending \(dodoService.optimizer.pendingTaskCount)"))
+                        Text("optimizer.pending \(dodoService.optimizer.pendingTaskCount)")
                             .font(.dodoCaption)
                             .foregroundColor(.dodoTextSecondary)
                     }
