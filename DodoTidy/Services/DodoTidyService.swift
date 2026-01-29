@@ -1632,24 +1632,7 @@ final class OptimizerProvider {
             ["Finder"],
             nil
         ),
-        (
-            "Clear memory cache",
-            "Purge inactive memory to reduce memory pressure",
-            "memorychip",
-            "Reduced memory pressure",
-            "/usr/sbin/purge",
-            [],
-            nil
-        ),
-        (
-            "Flush ARP cache",
-            "Clear ARP cache to fix network discovery issues",
-            "wifi",
-            "Better network discovery",
-            "/usr/sbin/arp",
-            ["-a", "-d"],
-            nil
-        ),
+        // Note: "purge" and "arp -a -d" commands removed as they require sudo
     ]
 
     /// Analyze system for optimization opportunities
