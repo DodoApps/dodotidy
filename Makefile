@@ -63,6 +63,29 @@ archive:
 		-archivePath $(ARCHIVE_PATH) \
 		archive
 
+# Get version from project.yml
+VERSION := $(shell grep 'MARKETING_VERSION' project.yml | head -1 | sed 's/.*"\(.*\)"/\1/')
+
+# Create DMG for distribution
+dmg: build
+	@echo "Creating DMG for $(PROJECT_NAME) v$(VERSION)..."
+	@mkdir -p build
+	@rm -f build/$(PROJECT_NAME)-$(VERSION).dmg
+	create-dmg \
+		--volname "$(PROJECT_NAME)" \
+		--volicon "$(DERIVED_DATA)/Build/Products/Release/$(PROJECT_NAME).app/Contents/Resources/AppIcon.icns" \
+		--background "dmg-resources/background.png" \
+		--window-pos 200 120 \
+		--window-size 660 400 \
+		--icon-size 100 \
+		--icon "$(PROJECT_NAME).app" 150 200 \
+		--hide-extension "$(PROJECT_NAME).app" \
+		--app-drop-link 510 200 \
+		--no-internet-enable \
+		"build/$(PROJECT_NAME)-$(VERSION).dmg" \
+		"$(DERIVED_DATA)/Build/Products/Release/$(PROJECT_NAME).app"
+	@echo "DMG created: build/$(PROJECT_NAME)-$(VERSION).dmg"
+
 # Run the app
 run: build-debug
 	@echo "Running $(PROJECT_NAME)..."
@@ -80,9 +103,14 @@ help:
 	@echo "  make open              Open project in Xcode"
 	@echo "  make run               Build and run debug version"
 	@echo "  make archive           Create release archive"
+	@echo "  make dmg               Create DMG for distribution"
 	@echo "  make help              Show this help"
 	@echo ""
 	@echo "First time setup:"
 	@echo "  1. make install-dependencies"
 	@echo "  2. make generate-project"
 	@echo "  3. make build"
+	@echo ""
+	@echo "Creating a release:"
+	@echo "  1. make dmg"
+	@echo "  2. Upload build/DodoTidy-x.x.x.dmg to GitHub releases"

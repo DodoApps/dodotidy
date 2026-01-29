@@ -663,10 +663,41 @@ final class AnalyzerProvider {
 
     /// Get file size at path
     private func getFileSize(at path: String) -> Int64 {
-        guard let attrs = try? FileManager.default.attributesOfItem(atPath: path) else {
+        let fileManager = FileManager.default
+        var isDir: ObjCBool = false
+
+        guard fileManager.fileExists(atPath: path, isDirectory: &isDir) else {
             return 0
         }
-        return Int64(attrs[.size] as? UInt64 ?? 0)
+
+        // For regular files, return the file size
+        if !isDir.boolValue {
+            guard let attrs = try? fileManager.attributesOfItem(atPath: path) else {
+                return 0
+            }
+            return Int64(attrs[.size] as? UInt64 ?? 0)
+        }
+
+        // For directories, calculate total size of contents recursively
+        var totalSize: Int64 = 0
+
+        guard let enumerator = fileManager.enumerator(
+            at: URL(fileURLWithPath: path),
+            includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey],
+            options: [.skipsHiddenFiles]
+        ) else {
+            return 0
+        }
+
+        for case let fileURL as URL in enumerator {
+            guard let values = try? fileURL.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey]),
+                  values.isRegularFile == true else {
+                continue
+            }
+            totalSize += Int64(values.fileSize ?? 0)
+        }
+
+        return totalSize
     }
 
     /// Get last access date at path
@@ -1345,8 +1376,134 @@ final class CleanerProvider {
     }
 
     /// Check if a folder name matches any installed app
+    // Known folder name mappings for apps that use different data folder names
+    private let knownFolderMappings: [String: [String]] = [
+        // Browsers
+        "bravesoftware": ["brave browser", "brave"],
+        "google": ["google chrome", "chrome", "google drive", "google earth"],
+        "mozilla": ["firefox", "thunderbird"],
+        "arc": ["arc"],
+
+        // Microsoft products
+        "microsoft": ["microsoft edge", "microsoft word", "microsoft excel", "microsoft powerpoint", "microsoft outlook", "onedrive", "microsoft teams", "visual studio code", "vs code"],
+
+        // Adobe products
+        "adobe": ["adobe photoshop", "photoshop", "adobe illustrator", "illustrator", "adobe premiere", "premiere pro", "adobe after effects", "after effects", "adobe lightroom", "lightroom", "adobe acrobat", "acrobat", "adobe xd", "adobe indesign", "indesign", "adobe creative cloud"],
+
+        // JetBrains IDEs
+        "jetbrains": ["intellij idea", "pycharm", "webstorm", "phpstorm", "clion", "datagrip", "goland", "rider", "rubymine", "appcode", "fleet"],
+
+        // Code editors
+        "code": ["visual studio code", "vs code", "vscode"],
+        "sublime text": ["sublime text"],
+        "sublimehq": ["sublime text", "sublime merge"],
+        "vscodium": ["vscodium"],
+        "cursor": ["cursor"],
+        "zed": ["zed"],
+
+        // Communication apps
+        "slack": ["slack"],
+        "discord": ["discord"],
+        "zoom.us": ["zoom", "zoom.us"],
+        "skype": ["skype"],
+        "telegram": ["telegram", "telegram desktop"],
+        "whatsapp": ["whatsapp"],
+        "signal": ["signal"],
+        "messenger": ["messenger"],
+
+        // Development tools
+        "docker": ["docker desktop", "docker"],
+        "github desktop": ["github desktop"],
+        "sourcetree": ["sourcetree"],
+        "postman": ["postman"],
+        "insomnia": ["insomnia"],
+        "tableplus": ["tableplus"],
+        "sequel pro": ["sequel pro"],
+        "dbeaver": ["dbeaver"],
+        "cyberduck": ["cyberduck"],
+        "transmit": ["transmit"],
+        "iterm2": ["iterm", "iterm2"],
+        "hyper": ["hyper"],
+        "warp": ["warp"],
+
+        // Cloud storage
+        "dropbox": ["dropbox"],
+        "box": ["box"],
+        "onedrive": ["onedrive", "microsoft onedrive"],
+
+        // Productivity
+        "1password": ["1password", "1password 7", "1password 8"],
+        "bitwarden": ["bitwarden"],
+        "lastpass": ["lastpass"],
+        "linear": ["linear"],
+        "notion": ["notion"],
+        "obsidian": ["obsidian"],
+        "bear": ["bear"],
+        "evernote": ["evernote"],
+        "todoist": ["todoist"],
+        "things": ["things", "things 3"],
+        "fantastical": ["fantastical"],
+        "cron": ["cron"],
+        "craft": ["craft"],
+
+        // Design tools
+        "figma": ["figma"],
+        "sketch": ["sketch"],
+        "zeplin": ["zeplin"],
+        "principle": ["principle"],
+        "framer": ["framer"],
+        "canva": ["canva"],
+
+        // Media apps
+        "spotify": ["spotify"],
+        "vlc": ["vlc"],
+        "iina": ["iina"],
+        "plex": ["plex"],
+        "handbrake": ["handbrake"],
+
+        // Utilities
+        "raycast": ["raycast"],
+        "alfred": ["alfred", "alfred 4", "alfred 5"],
+        "bartender": ["bartender", "bartender 4"],
+        "cleanmymac": ["cleanmymac", "cleanmymac x"],
+        "appcleaner": ["appcleaner"],
+        "the unarchiver": ["the unarchiver"],
+        "keka": ["keka"],
+        "rectangle": ["rectangle"],
+        "magnet": ["magnet"],
+        "bettertouchtool": ["bettertouchtool"],
+        "karabiner": ["karabiner", "karabiner-elements"],
+        "keyboard maestro": ["keyboard maestro"],
+        "hazel": ["hazel"],
+        "popclip": ["popclip"],
+        "paste": ["paste"],
+        "clipy": ["clipy"],
+
+        // Virtualization
+        "parallels": ["parallels desktop", "parallels"],
+        "vmware fusion": ["vmware fusion"],
+        "virtualbox": ["virtualbox"],
+        "utm": ["utm"],
+
+        // Other common apps
+        "paragon software": ["ntfs for mac", "paragon ntfs", "extfs for mac"],
+        "elgato": ["elgato stream deck", "stream deck", "elgato wave link"],
+        "logitech": ["logitech options", "logi options+", "logitech g hub"],
+        "razer": ["razer synapse"],
+        "steelseries": ["steelseries gg", "steelseries engine"],
+    ]
+
     private func matchesInstalledApp(folderName: String, installedApps: InstalledAppIdentifiers) -> Bool {
         let lowerName = folderName.lowercased()
+
+        // Check known folder mappings first
+        if let mappedAppNames = knownFolderMappings[lowerName] {
+            for mappedName in mappedAppNames {
+                if installedApps.appNames.contains(mappedName) {
+                    return true
+                }
+            }
+        }
 
         // Direct match with app names
         if installedApps.appNames.contains(lowerName) {

@@ -222,6 +222,10 @@ final class StatusItemManager: NSObject {
 // MARK: - Menu Bar Header View
 
 struct MenuBarHeaderView: View {
+    private var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 12) {
@@ -234,8 +238,14 @@ struct MenuBarHeaderView: View {
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("DodoTidy")
-                        .font(.system(size: 14, weight: .semibold))
+                    HStack(spacing: 6) {
+                        Text("DodoTidy")
+                            .font(.system(size: 14, weight: .semibold))
+
+                        Text("v\(appVersion)")
+                            .font(.system(size: 11))
+                            .foregroundStyle(.secondary)
+                    }
 
                     Text("System Cleaner & Monitor")
                         .font(.system(size: 11))
