@@ -79,6 +79,8 @@ struct MenuBarView: View {
 
     // MARK: - Metrics Section
 
+    @State private var showRAMPopover = false
+
     private var metricsSection: some View {
         VStack(spacing: 12) {
             MetricRow(
@@ -89,13 +91,26 @@ struct MenuBarView: View {
                 color: colorForUsage(cpuUsage)
             )
 
-            MetricRow(
-                icon: "memorychip",
-                label: String(localized: "dashboard.memory"),
-                value: memoryUsage.formattedPercentInt,
-                progress: memoryUsage / 100,
-                color: colorForUsage(memoryUsage)
-            )
+            // RAM row - clickable to show per-app usage
+            Button {
+                showRAMPopover.toggle()
+            } label: {
+                MetricRow(
+                    icon: "memorychip",
+                    label: String(localized: "dashboard.memory"),
+                    value: memoryUsage.formattedPercentInt,
+                    progress: memoryUsage / 100,
+                    color: colorForUsage(memoryUsage),
+                    isClickable: true
+                )
+            }
+            .buttonStyle(.plain)
+            .popover(isPresented: $showRAMPopover, arrowEdge: .trailing) {
+                RAMDetailPopover(
+                    topProcesses: dodoService.status.metrics?.topProcesses ?? [],
+                    memoryInfo: dodoService.status.metrics?.memory
+                )
+            }
 
             MetricRow(
                 icon: "internaldrive",
@@ -379,6 +394,9 @@ struct MetricRow: View {
     let progress: Double
     let color: Color
     var warning: Bool = false
+    var isClickable: Bool = false
+
+    @State private var isHovering = false
 
     var body: some View {
         HStack(spacing: 12) {
@@ -416,9 +434,144 @@ struct MetricRow: View {
                         .font(.system(size: 10))
                         .foregroundColor(.dodoWarning)
                 }
+
+                if isClickable {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 10))
+                        .foregroundColor(.dodoTextTertiary)
+                }
             }
-            .frame(width: 50, alignment: .trailing)
+            .frame(width: isClickable ? 60 : 50, alignment: .trailing)
         }
+        .padding(.vertical, isClickable ? 4 : 0)
+        .padding(.horizontal, isClickable ? 4 : 0)
+        .background(
+            isClickable && isHovering ?
+            RoundedRectangle(cornerRadius: 6).fill(Color.dodoBackgroundTertiary.opacity(0.5)) :
+            nil
+        )
+        .onHover { hovering in
+            if isClickable {
+                isHovering = hovering
+            }
+        }
+    }
+}
+
+// MARK: - RAM Detail Popover
+
+struct RAMDetailPopover: View {
+    let topProcesses: [DodoTidyProcessInfo]
+    let memoryInfo: MemoryStatus?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Header
+            HStack {
+                Image(systemName: "memorychip")
+                    .font(.system(size: 14))
+                    .foregroundColor(.dodoPrimary)
+
+                Text(String(localized: "ram.title"))
+                    .font(.dodoSubheadline)
+                    .foregroundColor(.dodoTextPrimary)
+
+                Spacer()
+
+                if let memory = memoryInfo {
+                    Text("\(memory.used.formattedBytes) / \(memory.total.formattedBytes)")
+                        .font(.dodoCaptionSmall)
+                        .foregroundColor(.dodoTextSecondary)
+                }
+            }
+            .padding(12)
+
+            Divider()
+                .background(Color.dodoBorder.opacity(0.3))
+
+            if topProcesses.isEmpty {
+                VStack(spacing: 8) {
+                    Image(systemName: "chart.bar.xaxis")
+                        .font(.system(size: 24))
+                        .foregroundColor(.dodoTextTertiary)
+                    Text(String(localized: "ram.noData"))
+                        .font(.dodoCaption)
+                        .foregroundColor(.dodoTextTertiary)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+            } else {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(Array(topProcesses.enumerated()), id: \.offset) { index, process in
+                            ProcessRow(process: process, rank: index + 1)
+
+                            if index < topProcesses.count - 1 {
+                                Divider()
+                                    .background(Color.dodoBorder.opacity(0.2))
+                                    .padding(.leading, 32)
+                            }
+                        }
+                    }
+                }
+                .frame(maxHeight: 250)
+            }
+        }
+        .frame(width: 280)
+        .background(Color.dodoBackground)
+    }
+}
+
+struct ProcessRow: View {
+    let process: DodoTidyProcessInfo
+    let rank: Int
+
+    var body: some View {
+        HStack(spacing: 10) {
+            // Rank badge
+            Text("\(rank)")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(.dodoTextTertiary)
+                .frame(width: 20)
+
+            // Process name
+            Text(process.name)
+                .font(.dodoBody)
+                .foregroundColor(.dodoTextPrimary)
+                .lineLimit(1)
+                .truncationMode(.tail)
+
+            Spacer()
+
+            // Memory usage
+            VStack(alignment: .trailing, spacing: 2) {
+                Text(process.memory.formattedPercentInt)
+                    .font(.dodoCaptionSmall)
+                    .foregroundColor(.dodoTextPrimary)
+                    .monospacedDigit()
+
+                // Mini progress bar
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(Color.dodoBackgroundTertiary)
+
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(colorForMemory(process.memory))
+                            .frame(width: geometry.size.width * min(max(process.memory / 100, 0), 1))
+                    }
+                }
+                .frame(width: 50, height: 4)
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+    }
+
+    private func colorForMemory(_ percent: Double) -> Color {
+        if percent < 5 { return .dodoSuccess }
+        if percent < 15 { return .dodoWarning }
+        return .dodoDanger
     }
 }
 

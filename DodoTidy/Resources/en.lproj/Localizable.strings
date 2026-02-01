@@ -316,3 +316,9 @@
 "common.success" = "Success";
 "common.warning" = "Warning";
 "common.somethingWrong" = "Something went wrong";
+"common.revealInFinder" = "Reveal in Finder";
+
+/* RAM Detail Popover */
+"ram.title" = "Memory usage by app";
+"ram.noData" = "No process data available";
+"ram.total" = "Total";

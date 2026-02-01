@@ -316,3 +316,9 @@
 "common.success" = "Başarılı";
 "common.warning" = "Uyarı";
 "common.somethingWrong" = "Bir şeyler yanlış gitti";
+"common.revealInFinder" = "Finder'da Göster";
+
+/* RAM Detail Popover */
+"ram.title" = "Uygulamaya göre bellek kullanımı";
+"ram.noData" = "İşlem verisi yok";
+"ram.total" = "Toplam";

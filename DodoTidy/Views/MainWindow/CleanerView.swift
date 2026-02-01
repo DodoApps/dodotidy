@@ -848,6 +848,18 @@ struct CleaningItemRow: View {
                     .font(.dodoBody)
                     .foregroundColor(.dodoTextSecondary)
                     .monospacedDigit()
+
+                // Reveal in Finder button
+                Button {
+                    NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: item.path)
+                } label: {
+                    Image(systemName: "folder")
+                        .font(.system(size: 14))
+                        .foregroundColor(.dodoTextTertiary)
+                }
+                .buttonStyle(.plain)
+                .opacity(isHovering ? 1 : 0)
+                .help(String(localized: "common.revealInFinder"))
             }
             .padding(.horizontal, DodoTidyDimensions.cardPadding)
             .padding(.vertical, 10)

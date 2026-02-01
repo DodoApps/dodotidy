@@ -134,6 +134,9 @@ final class StatusProvider {
         // Get Bluetooth devices
         let bluetoothDevices = getBluetoothDevices()
 
+        // Get top memory-consuming processes
+        let topProcesses = getTopProcesses()
+
         // Track history for sparklines
         MetricsHistoryManager.shared.addCPU(cpuUsage)
         MetricsHistoryManager.shared.addMemory(memoryInfo.usedPercent)
@@ -198,7 +201,7 @@ final class StatusProvider {
             ),
             sensors: nil,
             bluetooth: bluetoothDevices.isEmpty ? nil : bluetoothDevices,
-            topProcesses: nil
+            topProcesses: topProcesses.isEmpty ? nil : topProcesses
         )
     }
 
@@ -415,6 +418,78 @@ final class StatusProvider {
         }
 
         return []
+    }
+
+    private func getTopProcesses() -> [DodoTidyProcessInfo] {
+        // Use ps command to get top memory-consuming processes
+        let process = Process()
+        let pipe = Pipe()
+
+        process.executableURL = URL(fileURLWithPath: "/bin/ps")
+        // Get top 10 processes sorted by memory (rss), showing name, CPU%, memory in KB
+        process.arguments = ["-axo", "comm=,pcpu=,rss=", "-r"]
+        process.standardOutput = pipe
+        process.standardError = FileHandle.nullDevice
+
+        do {
+            try process.run()
+            process.waitUntilExit()
+
+            let data = pipe.fileHandleForReading.readDataToEndOfFile()
+            guard let output = String(data: data, encoding: .utf8) else { return [] }
+
+            let totalMemory = Double(ProcessInfo.processInfo.physicalMemory)
+            var processes: [DodoTidyProcessInfo] = []
+            var seenNames = Set<String>()
+
+            for line in output.components(separatedBy: "\n").prefix(50) {
+                let trimmed = line.trimmingCharacters(in: .whitespaces)
+                if trimmed.isEmpty { continue }
+
+                // Parse: command cpu% rss(kb)
+                let components = trimmed.components(separatedBy: .whitespaces).filter { !$0.isEmpty }
+                guard components.count >= 3 else { continue }
+
+                // Command is all but last 2 components
+                let cmdComponents = components.dropLast(2)
+                var name = cmdComponents.joined(separator: " ")
+
+                // Extract just the app name (last path component)
+                if let lastComponent = name.components(separatedBy: "/").last {
+                    name = lastComponent
+                }
+
+                // Skip system processes and DodoTidy itself
+                if name.hasPrefix("(") || name == "kernel_task" || name == "DodoTidy" { continue }
+
+                // Skip duplicates
+                if seenNames.contains(name) { continue }
+                seenNames.insert(name)
+
+                guard let cpuPercent = Double(components[components.count - 2]),
+                      let rssKB = Double(components[components.count - 1]) else { continue }
+
+                // Convert RSS from KB to bytes, then to percentage of total memory
+                let rssBytes = rssKB * 1024
+                let memoryPercent = (rssBytes / totalMemory) * 100
+
+                // Only include processes using more than 0.1% memory
+                if memoryPercent >= 0.1 {
+                    processes.append(DodoTidyProcessInfo(
+                        name: name,
+                        cpu: cpuPercent,
+                        memory: memoryPercent
+                    ))
+                }
+
+                if processes.count >= 10 { break }
+            }
+
+            // Sort by memory usage descending
+            return processes.sorted { $0.memory > $1.memory }
+        } catch {
+            return []
+        }
     }
 
     private func getMacModel() -> String {

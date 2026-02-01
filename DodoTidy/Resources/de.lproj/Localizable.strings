@@ -227,3 +227,9 @@
 "common.success" = "Erfolg";
 "common.warning" = "Warnung";
 "common.somethingWrong" = "Etwas ist schiefgelaufen";
+"common.revealInFinder" = "Im Finder anzeigen";
+
+/* RAM Detail Popover */
+"ram.title" = "Speichernutzung nach App";
+"ram.noData" = "Keine Prozessdaten verfügbar";
+"ram.total" = "Gesamt";
