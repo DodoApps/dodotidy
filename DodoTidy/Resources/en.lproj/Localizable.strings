@@ -53,7 +53,7 @@
 "cleaner.totalSelected" = "Total selected";
 "cleaner.items" = "%d items";
 "cleaner.movedToTrash" = "Items are moved to Trash";
-"cleaner.cleanSelected" = "Clean selected";
+"cleaner.cleanSelected" = "Review and clean";
 "cleaner.cleaning" = "Cleaning...";
 "cleaner.loading" = "Loading...";
 "cleaner.confirmTitle" = "Confirm cleaning";

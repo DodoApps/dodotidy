@@ -53,7 +53,7 @@
 "cleaner.totalSelected" = "Gesamt ausgewählt";
 "cleaner.items" = "%d Elemente";
 "cleaner.movedToTrash" = "Elemente werden in den Papierkorb verschoben";
-"cleaner.cleanSelected" = "Ausgewählte bereinigen";
+"cleaner.cleanSelected" = "Überprüfen und bereinigen";
 "cleaner.cleaning" = "Wird bereinigt...";
 "cleaner.loading" = "Wird geladen...";
 "cleaner.confirmTitle" = "Bereinigung bestätigen";

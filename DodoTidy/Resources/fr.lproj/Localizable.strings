@@ -53,7 +53,7 @@
 "cleaner.totalSelected" = "Total sélectionné";
 "cleaner.items" = "%d éléments";
 "cleaner.movedToTrash" = "Les éléments sont déplacés vers la Corbeille";
-"cleaner.cleanSelected" = "Nettoyer la sélection";
+"cleaner.cleanSelected" = "Vérifier et nettoyer";
 "cleaner.cleaning" = "Nettoyage en cours...";
 "cleaner.loading" = "Chargement...";
 "cleaner.confirmTitle" = "Confirmer le nettoyage";

@@ -53,7 +53,7 @@
 "cleaner.totalSelected" = "Toplam seçili";
 "cleaner.items" = "%d öğe";
 "cleaner.movedToTrash" = "Öğeler Çöp Kutusuna taşınır";
-"cleaner.cleanSelected" = "Seçilenleri temizle";
+"cleaner.cleanSelected" = "İncele ve temizle";
 "cleaner.cleaning" = "Temizleniyor...";
 "cleaner.loading" = "Yükleniyor...";
 "cleaner.confirmTitle" = "Temizlemeyi onayla";
