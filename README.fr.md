@@ -10,7 +10,6 @@ Une application macOS native pour la surveillance système, l'analyse de disque 
 
 - **Tableau de bord** : Métriques système en temps réel (CPU, mémoire, disque, batterie, appareils Bluetooth)
 - **Nettoyeur** : Analyser et supprimer les caches, journaux et fichiers temporaires
-- **Données d'applications orphelines** : Détecter et supprimer les données résiduelles d'applications désinstallées
 - **Analyseur** : Analyse visuelle de l'espace disque avec navigation interactive
 - **Optimiseur** : Tâches d'optimisation système (vider le cache DNS, réinitialiser Spotlight, reconstruire le cache des polices, etc.)
 - **Applications** : Afficher les applications installées et désinstaller avec nettoyage des fichiers associés
@@ -27,7 +26,6 @@ DodoTidy est une alternative gratuite et open source aux nettoyeurs système mac
 | **Surveillance système** | ✅ CPU, RAM, Disque, Batterie, Bluetooth | ✅ CPU, RAM, Disque | ✅ Surveillance mémoire | ❌ |
 | **Nettoyage cache/fichiers** | ✅ | ✅ | ✅ | ❌ |
 | **Analyseur d'espace disque** | ✅ Graphique sunburst visuel | ✅ Space Lens | ❌ | ✅ Anneaux visuels |
-| **Détection données orphelines** | ✅ | ✅ | ✅ | ❌ |
 | **Désinstallateur d'apps** | ✅ Avec fichiers associés | ✅ Avec fichiers associés | ✅ Smart Uninstaller | ❌ |
 | **Optimisation système** | ✅ DNS, Spotlight, polices, Dock | ✅ Scripts maintenance | ✅ Démarrage, RAM | ❌ |
 | **Nettoyage planifié** | ✅ | ✅ | ❌ | ❌ |
@@ -71,7 +69,6 @@ Vous pouvez personnaliser les chemins protégés dans les Réglages.
 - **Corbeille** - Le vidage est IRRÉVERSIBLE
 - **Journaux système** - Peuvent être nécessaires pour le dépannage
 - **Caches développeur** (npm, Yarn, Homebrew, pip, CocoaPods, Gradle, Maven) - Peuvent nécessiter de longs re-téléchargements
-- **Données d'applications orphelines** - Dossiers résiduels d'applications désinstallées (nécessite un examen attentif)
 
 ### 4. Mode simulation
 
@@ -110,27 +107,6 @@ L'optimiseur n'exécute que des commandes système connues et sûres :
 - `lsregister` - Reconstruire la base de données Launch Services
 
 Aucune commande système destructive ou risquée n'est incluse.
-
-### 9. Détection des données d'applications orphelines
-
-DodoTidy peut détecter les données résiduelles d'applications que vous avez désinstallées :
-
-**Emplacements analysés :**
-- `~/Library/Application Support`
-- `~/Library/Caches`
-- `~/Library/Preferences`
-- `~/Library/Containers`
-- `~/Library/Saved Application State`
-- `~/Library/Logs`
-- Et 6 autres emplacements Library
-
-**Mesures de sécurité :**
-- Correspondance intelligente avec les applications installées via les identifiants de bundle
-- Exclut tous les services système Apple (`com.apple.*`)
-- Exclut les composants système courants et les outils de développement
-- Les éléments ne sont pas sélectionnés par défaut - vous devez choisir explicitement ce qu'il faut nettoyer
-- Avertissement agressif affiché avant le nettoyage
-- Le dossier entier est déplacé vers la Corbeille (récupérable)
 
 ## Installation
 

@@ -21,7 +21,6 @@ https://github.com/user-attachments/assets/30fbedeb-1083-4c42-beac-9de65b2d9c6c
 
 - **Dashboard**: Real-time system metrics (CPU, memory, disk, battery, Bluetooth devices)
 - **Cleaner**: Scan and remove caches, logs, and temporary files
-- **Orphaned app data**: Detect and remove leftover data from uninstalled applications
 - **Analyzer**: Visual disk space analysis with interactive navigation
 - **Optimizer**: System optimization tasks (DNS flush, Spotlight reset, font cache rebuild, etc.)
 - **Apps**: View installed applications and uninstall with related file cleanup
@@ -38,7 +37,6 @@ DodoTidy is a free and open-source alternative to paid macOS system cleaners lik
 | **System Monitoring** | ✅ CPU, RAM, Disk, Battery, Bluetooth | ✅ CPU, RAM, Disk | ✅ Memory monitoring | ❌ |
 | **Cache/Junk Cleaning** | ✅ | ✅ | ✅ | ❌ |
 | **Disk Space Analyzer** | ✅ Visual sunburst chart | ✅ Space Lens | ❌ | ✅ Visual rings |
-| **Orphaned App Data Detection** | ✅ | ✅ | ✅ | ❌ |
 | **App Uninstaller** | ✅ With related files | ✅ With related files | ✅ Smart Uninstaller | ❌ |
 | **System Optimization** | ✅ DNS, Spotlight, fonts, Dock | ✅ Maintenance scripts | ✅ Startup items, RAM | ❌ |
 | **Scheduled Cleaning** | ✅ | ✅ | ❌ | ❌ |
@@ -82,7 +80,6 @@ You can customize protected paths in Settings.
 - **Trash** - Emptying is IRREVERSIBLE
 - **System logs** - May be needed for troubleshooting
 - **Developer caches** (npm, Yarn, Homebrew, pip, CocoaPods, Gradle, Maven) - May require lengthy re-downloads
-- **Orphaned app data** - Leftover folders from uninstalled apps (requires careful review)
 
 ### 4. Dry run mode
 
@@ -121,27 +118,6 @@ The optimizer only runs well-known, safe system commands:
 - `lsregister` - Rebuild Launch Services database
 
 No destructive or risky system commands are included.
-
-### 9. Orphaned app data detection
-
-DodoTidy can detect leftover data from applications you've uninstalled:
-
-**Scanned locations:**
-- `~/Library/Application Support`
-- `~/Library/Caches`
-- `~/Library/Preferences`
-- `~/Library/Containers`
-- `~/Library/Saved Application State`
-- `~/Library/Logs`
-- And 6 more Library locations
-
-**Safety measures:**
-- Smart matching against installed apps using bundle IDs
-- Excludes all Apple system services (`com.apple.*`)
-- Excludes common system components and developer tools
-- Items default to unselected - you must explicitly choose what to clean
-- Aggressive warning displayed before cleaning
-- Entire folder is moved to Trash (recoverable)
 
 ## Installation
 

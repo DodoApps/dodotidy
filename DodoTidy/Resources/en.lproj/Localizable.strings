@@ -159,17 +159,12 @@
 "category.trash" = "Trash";
 "category.systemLogs" = "System logs";
 "category.devTools" = "Developer tools";
-"category.orphanedAppData" = "Orphaned app data";
 
 /* Warnings */
 "warning.downloads" = "⚠️ Downloads may contain important files you haven't processed yet";
 "warning.trash" = "⚠️ Emptying Trash is IRREVERSIBLE - files cannot be recovered";
 "warning.logs" = "⚠️ Logs may be needed for troubleshooting recent issues";
 "warning.devCache" = "⚠️ Developer caches may require lengthy re-downloads to rebuild";
-"warning.orphanedData" = "⚠️ CAUTION: These folders appear to belong to uninstalled applications. Some may be needed by system services or apps installed elsewhere (Homebrew, Setapp, etc.). Review each item carefully before cleaning.";
-
-/* Cleaner - Orphan scan */
-"cleaner.scanningOrphans" = "Scanning for orphaned app data...";
 
 /* History */
 "history.title" = "History";

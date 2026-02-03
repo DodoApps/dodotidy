@@ -10,7 +10,6 @@ Eine native macOS-Anwendung für Systemüberwachung, Festplattenanalyse und Bere
 
 - **Dashboard**: Echtzeit-Systemmetriken (CPU, Arbeitsspeicher, Festplatte, Akku, Bluetooth-Geräte)
 - **Bereiniger**: Caches, Protokolle und temporäre Dateien scannen und entfernen
-- **Verwaiste App-Daten**: Übriggebliebene Daten von deinstallierten Anwendungen erkennen und entfernen
 - **Analysator**: Visuelle Speicherplatzanalyse mit interaktiver Navigation
 - **Optimierer**: Systemoptimierungsaufgaben (DNS-Cache leeren, Spotlight zurücksetzen, Schriftarten-Cache neu erstellen usw.)
 - **Apps**: Installierte Anwendungen anzeigen und mit zugehöriger Dateibereinigung deinstallieren
@@ -27,7 +26,6 @@ DodoTidy ist eine kostenlose und quelloffene Alternative zu kostenpflichtigen ma
 | **Systemüberwachung** | ✅ CPU, RAM, Disk, Akku, Bluetooth | ✅ CPU, RAM, Disk | ✅ Speicherüberwachung | ❌ |
 | **Cache/Junk-Bereinigung** | ✅ | ✅ | ✅ | ❌ |
 | **Speicherplatzanalyse** | ✅ Visuelles Sunburst-Diagramm | ✅ Space Lens | ❌ | ✅ Visuelle Ringe |
-| **Verwaiste App-Daten-Erkennung** | ✅ | ✅ | ✅ | ❌ |
 | **App-Deinstallation** | ✅ Mit zugehörigen Dateien | ✅ Mit zugehörigen Dateien | ✅ Smart Uninstaller | ❌ |
 | **Systemoptimierung** | ✅ DNS, Spotlight, Schriften, Dock | ✅ Wartungsskripte | ✅ Startobjekte, RAM | ❌ |
 | **Geplante Bereinigung** | ✅ | ✅ | ❌ | ❌ |
@@ -71,7 +69,6 @@ Geschützte Pfade können in den Einstellungen angepasst werden.
 - **Papierkorb** - Leeren ist UNWIDERRUFLICH
 - **Systemprotokolle** - Können für Fehlerbehebung benötigt werden
 - **Entwickler-Caches** (npm, Yarn, Homebrew, pip, CocoaPods, Gradle, Maven) - Können lange Neudownloads erfordern
-- **Verwaiste App-Daten** - Übriggebliebene Ordner von deinstallierten Apps (erfordert sorgfältige Überprüfung)
 
 ### 4. Probelauf-Modus
 
@@ -110,27 +107,6 @@ Der Optimierer führt nur bekannte, sichere Systembefehle aus:
 - `lsregister` - Launch Services-Datenbank neu erstellen
 
 Keine destruktiven oder riskanten Systembefehle sind enthalten.
-
-### 9. Erkennung verwaister App-Daten
-
-DodoTidy kann übriggebliebene Daten von Anwendungen erkennen, die Sie deinstalliert haben:
-
-**Gescannte Speicherorte:**
-- `~/Library/Application Support`
-- `~/Library/Caches`
-- `~/Library/Preferences`
-- `~/Library/Containers`
-- `~/Library/Saved Application State`
-- `~/Library/Logs`
-- Und 6 weitere Library-Speicherorte
-
-**Sicherheitsmaßnahmen:**
-- Intelligenter Abgleich mit installierten Apps anhand von Bundle-IDs
-- Schließt alle Apple-Systemdienste aus (`com.apple.*`)
-- Schließt gängige Systemkomponenten und Entwicklerwerkzeuge aus
-- Elemente sind standardmäßig nicht ausgewählt - Sie müssen explizit auswählen, was bereinigt werden soll
-- Aggressive Warnung wird vor der Bereinigung angezeigt
-- Gesamter Ordner wird in den Papierkorb verschoben (wiederherstellbar)
 
 ## Installation
 
